@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Administrator on 2018/8/7 0007.
  */
-@Service("adminService")
+@Service
 public class AdminServiceImpl implements AdminService {
 }
