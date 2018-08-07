@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/eshop
+    username: root
+    password: 123456
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+server:
+  port: 80
