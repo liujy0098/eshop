@@ -9,4 +9,9 @@ public class PageController {
     public String toIndex(){
         return "index";
     }
+
+    @RequestMapping("manager")
+    public String toManager(){
+        return "manager";
+    }
 }
