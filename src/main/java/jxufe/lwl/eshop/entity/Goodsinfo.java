@@ -108,6 +108,16 @@ public class Goodsinfo implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 商品原价
+     */
+    private Double goodsOldprice;
+
+    /**
+     * 商品售价
+     */
+    private Double goodPrice;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getGoodsId() {
@@ -270,6 +280,22 @@ public class Goodsinfo implements Serializable {
         this.createTime = createTime;
     }
 
+    public Double getGoodsOldprice() {
+        return goodsOldprice;
+    }
+
+    public void setGoodsOldprice(Double goodsOldprice) {
+        this.goodsOldprice = goodsOldprice;
+    }
+
+    public Double getGoodPrice() {
+        return goodPrice;
+    }
+
+    public void setGoodPrice(Double goodPrice) {
+        this.goodPrice = goodPrice;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -301,7 +327,9 @@ public class Goodsinfo implements Serializable {
             && (this.getMemberId() == null ? other.getMemberId() == null : this.getMemberId().equals(other.getMemberId()))
             && (this.getStock() == null ? other.getStock() == null : this.getStock().equals(other.getStock()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getGoodsOldprice() == null ? other.getGoodsOldprice() == null : this.getGoodsOldprice().equals(other.getGoodsOldprice()))
+            && (this.getGoodPrice() == null ? other.getGoodPrice() == null : this.getGoodPrice().equals(other.getGoodPrice()));
     }
 
     @Override
@@ -328,6 +356,8 @@ public class Goodsinfo implements Serializable {
         result = prime * result + ((getStock() == null) ? 0 : getStock().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getGoodsOldprice() == null) ? 0 : getGoodsOldprice().hashCode());
+        result = prime * result + ((getGoodPrice() == null) ? 0 : getGoodPrice().hashCode());
         return result;
     }
 
@@ -357,6 +387,8 @@ public class Goodsinfo implements Serializable {
         sb.append(", stock=").append(stock);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createTime=").append(createTime);
+        sb.append(", goodsOldprice=").append(goodsOldprice);
+        sb.append(", goodPrice=").append(goodPrice);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
