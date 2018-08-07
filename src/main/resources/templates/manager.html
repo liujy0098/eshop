@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>合众电商管理系统</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+    .container-fluid{
+        padding: 0px;
+    }
+    #bar{
+        height: 100px;
+        background-color: #5f5f5f;
+        float: left;
+    }
+    #nav{
+        height: 580px;
+        float: left;
+        background-color: #00bbee;
+    }
+     .btn{
+         height: 50px;
+         margin-top: 20px;
+     }
+    #workspace{
+        float: left;
+        height: 580px;
+        border: 0px;
+    }
+
+    #copyright{
+        background-color: #3c8b3c;
+        height: 100px;
+    }
+    #author{
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+        color: white;
+        font-size: 20px;
+    }
+</style>
+<body>
+<div class="container-fluid">
+    <div id="bar" class="col-md-12"></div>
+    <div id="nav" class="col-md-2">
+        <button class="btn btn-primary col-md-12">会员管理</button>
+        <button class="btn btn-primary col-md-12">文章管理</button>
+        <button class="btn btn-primary col-md-12">评论管理</button>
+        <button class="btn btn-primary col-md-12">订单管理</button>
+        <button class="btn btn-primary col-md-12">广告管理</button>
+        <button class="btn btn-primary col-md-12">商品管理</button>
+        <button class="btn btn-primary col-md-12">类别管理</button>
+        <button class="btn btn-primary col-md-12">系统设置</button>
+    </div>
+    <iframe id="workspace"  class="col-md-10" src="http://127.0.0.1/index" frameborder="n"></iframe>
+    <div id="copyright" class="col-md-12">
+        <div id="author">BY 刘建宇&万领顶&卢芳</div>
+    </div>
+</div>
+
+</body>
+</html>
