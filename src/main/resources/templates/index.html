@@ -5,6 +5,7 @@
     <title>合众电商管理系统</title>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         .container-fluid{
             padding: 0px;
@@ -40,20 +41,23 @@
             color: white;
             font-size: 20px;
         }
+        .fa{
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
 <div class="container-fluid">
     <div id="bar" class="col-md-12"></div>
     <div id="nav" class="col-md-2">
-        <button id="b1" class="btn btn-primary col-md-12">会员管理</button>
-        <button id="articleManager" class="btn btn-primary col-md-12">文章管理</button>
-        <button id="commentManager" class="btn btn-primary col-md-12">评论管理</button>
-        <button id="order" class="btn btn-primary col-md-12">订单管理</button>
-        <button id="b5" class="btn btn-primary col-md-12">广告管理</button>
-        <button id="b6" class="btn btn-primary col-md-12">商品管理</button>
-        <button id="b7" class="btn btn-primary col-md-12">类别管理</button>
-        <button id="b8" class="btn btn-primary col-md-12">系统设置</button>
+        </span><button id="b1" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
+        <button id="articleManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 文章管理</button>
+        <button id="commentManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 评论管理</button>
+        <button id="order" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
+        <button id="b5" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 广告管理</button>
+        <button id="b6" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 商品管理</button>
+        <button id="b7" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 类别管理</button>
+        <button id="b8" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 系统设置</button>
     </div>
     <iframe id="workspace"  class="col-md-10" src="http://127.0.0.1/articleManager" frameborder="n"></iframe>
     <div id="copyright" class="col-md-12">
