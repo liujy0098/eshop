@@ -1,6 +1,7 @@
 package jxufe.lwl.eshop.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * goods_comment
@@ -38,19 +39,19 @@ public class GoodsComment implements Serializable {
     private String scommMemberavatar;
 
     /**
-     * 评论时间
-     */
-    private String scommTime;
-
-    /**
      * 创建时间
      */
-    private Long createTime;
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private Long updateTime;
+    private Date updateTime;
+
+    /**
+     * 评论时间
+     */
+    private Date scommTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -102,28 +103,28 @@ public class GoodsComment implements Serializable {
         this.scommMemberavatar = scommMemberavatar;
     }
 
-    public String getScommTime() {
-        return scommTime;
-    }
-
-    public void setScommTime(String scommTime) {
-        this.scommTime = scommTime;
-    }
-
-    public Long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public Long getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Long updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getScommTime() {
+        return scommTime;
+    }
+
+    public void setScommTime(Date scommTime) {
+        this.scommTime = scommTime;
     }
 
     @Override
@@ -144,9 +145,9 @@ public class GoodsComment implements Serializable {
             && (this.getScommMemberid() == null ? other.getScommMemberid() == null : this.getScommMemberid().equals(other.getScommMemberid()))
             && (this.getScommMembername() == null ? other.getScommMembername() == null : this.getScommMembername().equals(other.getScommMembername()))
             && (this.getScommMemberavatar() == null ? other.getScommMemberavatar() == null : this.getScommMemberavatar().equals(other.getScommMemberavatar()))
-            && (this.getScommTime() == null ? other.getScommTime() == null : this.getScommTime().equals(other.getScommTime()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getScommTime() == null ? other.getScommTime() == null : this.getScommTime().equals(other.getScommTime()));
     }
 
     @Override
@@ -159,9 +160,9 @@ public class GoodsComment implements Serializable {
         result = prime * result + ((getScommMemberid() == null) ? 0 : getScommMemberid().hashCode());
         result = prime * result + ((getScommMembername() == null) ? 0 : getScommMembername().hashCode());
         result = prime * result + ((getScommMemberavatar() == null) ? 0 : getScommMemberavatar().hashCode());
-        result = prime * result + ((getScommTime() == null) ? 0 : getScommTime().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getScommTime() == null) ? 0 : getScommTime().hashCode());
         return result;
     }
 
@@ -177,9 +178,9 @@ public class GoodsComment implements Serializable {
         sb.append(", scommMemberid=").append(scommMemberid);
         sb.append(", scommMembername=").append(scommMembername);
         sb.append(", scommMemberavatar=").append(scommMemberavatar);
-        sb.append(", scommTime=").append(scommTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", scommTime=").append(scommTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
