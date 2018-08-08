@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("jxufe.lwl.eshop")
+@MapperScan("jxufe.lwl.eshop.dao")
 public class EshopApplication {
 
     public static void main(String[] args) {
