@@ -15,8 +15,9 @@
     <script type="text/javascript">
         $(function () {
             $('#tt').edatagrid({
-                url: '/memberinfo/list',
-                saveUrl: '',
+                url: '/memberinfo/pageList',
+                pagination:true,
+                saveUrl: '/memberinfo/saveMember',
                 updateUrl: '',
                 destroyUrl: ''
             });
@@ -24,7 +25,7 @@
     </script>
 </head>
 <body>
-<h1>XX管理</h1>
+<h1>会员管理</h1>
 <div style="margin-bottom:10px">
     <a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('addRow')">添加</a>
     <a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('saveRow')">保存</a>
@@ -37,7 +38,7 @@
        singleSelect="true">
     <thead>
     <tr>
-        <th field="memberId" width="100">ID</th>
+        <th field="memberId" editor="text"  width="100" >ID</th>
         <th field="memberMobile" width="200" editor="text">手机号</th>
         <th field="memberName" width="100" editor="text">名字</th>
         <th field="memberPasswd" width="100" editor="text">密码</th>

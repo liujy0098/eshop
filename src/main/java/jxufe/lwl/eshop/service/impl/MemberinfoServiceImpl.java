@@ -21,4 +21,9 @@ public class MemberinfoServiceImpl implements MemberinfoService{
     public List<Memberinfo> findAll() {
         return memberinfoDAO.findAll();
     }
+
+    @Override
+    public int saveMember(Memberinfo memberinfo) {
+        return  memberinfoDAO.insert(memberinfo);
+    }
 }

@@ -88,6 +88,16 @@ public class Memberinfo implements Serializable {
      */
     private String memberPic;
 
+    public Memberinfo(Integer memberId, String memberMobile, String memberName, String memberPasswd) {
+        this.memberId = memberId;
+        this.memberMobile = memberMobile;
+        this.memberName = memberName;
+        this.memberPasswd = memberPasswd;
+    }
+
+    public Memberinfo() {
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Integer getMemberId() {
