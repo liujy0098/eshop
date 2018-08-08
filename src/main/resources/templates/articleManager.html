@@ -15,10 +15,10 @@
 	<script type="text/javascript">
 		$(function(){
 			$('#tt').edatagrid({
-                    url: '/memberinfo/list',
-					saveUrl: '',
-					updateUrl: '',
-					destroyUrl: ''
+                    url: '/articleinfo/list',
+					saveUrl: '/articleinfo/add',
+					updateUrl: '/articleinfo/update',
+					destroyUrl: '/articleinfo/delete'
 			});
 		});
 	</script>
@@ -38,7 +38,7 @@
 		<thead>
 			<tr>
 				<th field="memberId" width="100">ID</th>
-				<th field="memberMobile" width="200" editor="text">手机号</th>
+				<th field="memberMobile" width="200" editor="text">3213213</th>
 				<th field="memberName" width="100" editor="text">名字</th>
 				<th field="memberPasswd" width="100" editor="text">密码</th>
 			</tr>
