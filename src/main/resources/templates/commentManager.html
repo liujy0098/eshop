@@ -10,17 +10,16 @@
 	<script type="text/javascript" src="jquery.edatagrid.js"></script>
 	<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript">
-        $(function(){
-            $('#tt').edatagrid({
-                idField:'articleId',
+		$(function(){
+			$('#tt').edatagrid({
                 rownumbers:true,
-                fitColumns:true,
-                url: '/article/list',
-                saveUrl: '/article/add',
-                updateUrl: '/article/update',
-                destroyUrl: '/article/delete'
-            });
-        });
+				fitColumns:true,
+				url: '/comment/list',
+				saveUrl: '/comment/add',
+				updateUrl: '/comment/update',
+				destroyUrl: '/comment/delete'
+			});
+		});
 	</script>
 	<style type="text/css">
 		a{
@@ -43,23 +42,22 @@
 		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('destroyRow')">删除</a>
 	</div>
 
-	<table id="tt" singleSelect="true">
-		<thead>
-		<tr>
-			<th field="articleId" width="100" editor="{type:'numberbox',options:{required:true}}">索引id</th>
-			<th field="articlePicUrl" width="200" editor="text">文章图片</th>
-			<th field="articleShow" width="100"
-				editor="{type:'validatebox',options:{required:true}}">是否显示
-			</th>
-			<th field="articleTitle" width="100" editor="text">标题</th>
-			<th field="createTime" class="datebox" width="100" editor="text">创建时间</th>
-			<th field="updateTime" class="datebox" width="100" editor="text">修改时间</th>
-			<th field="amountOfReading" width="100" editor="text">阅读量</th>
-			<th field="articleContent" width="100" editor="text">内容</th>
-		</tr>
-		</thead>
-	</table>
-</div>
+		<table id="tt" singleSelect="true">
+			<thead>
+			<tr>
+				<th field="scommId" width="100" editor="{type:'numberbox',options:{required:true}}">评论id</th>
+				<th field="goodisId" width="200" editor="text" >评论的商品ID</th>
+				<th field="scommContent" width="100" editor="text">评论内容</th>
+				<th field="scommMemberid" width="100" editor="text">会员id</th>
+				<th field="scommMembername" width="100" editor="text">会员名称</th>
+				<th field="scommMemberavatar" width="100" editor="text">会员头像</th>
+				<th field="createTime" width="100" editor="text">创建时间</th>
+				<th field="updateTime" width="100" editor="text">修改时间</th>
+				<th field="scommTime" width="100" editor="text">评论时间</th>
+			</tr>
+			</thead>
+		</table>
+	</div>
 
 </body>
 </html>
