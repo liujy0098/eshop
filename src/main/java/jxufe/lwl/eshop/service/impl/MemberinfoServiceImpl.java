@@ -24,12 +24,17 @@ public class MemberinfoServiceImpl implements MemberinfoService{
 
     @Override
     public int saveMember(Memberinfo memberinfo) {
-        return  memberinfoDAO.insert(memberinfo);
+        return  memberinfoDAO.insertSelective(memberinfo);
     }
 
     @Override
     public int deleteMember(int key) {
         return memberinfoDAO.deleteByPrimaryKey(key);
+    }
+
+    @Override
+    public Memberinfo findByPK(int key) {
+        return memberinfoDAO.selectByPrimaryKey(key);
     }
 
 

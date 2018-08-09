@@ -6,11 +6,17 @@ import jxufe.lwl.eshop.dao.MemberinfoDAO;
 import jxufe.lwl.eshop.entity.Memberinfo;
 import jxufe.lwl.eshop.service.MemberinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,15 +49,47 @@ public class MemberController {
         return map;
     }
 
-    @RequestMapping("saveMember")
-    public void saveMember(Memberinfo memberinfo){
-        memberinfoService.saveMember(memberinfo);
-    }
+//    @RequestMapping("saveMember")
+//    public void saveMember(@RequestParam(name="memberId",defaultValue = "null")Integer memberId,
+//                           @RequestParam(name="memberMobile",defaultValue = "null")String memberMobile,
+//                           @RequestParam(name="memberName",defaultValue = "null")String memberName,
+//                           @RequestParam(name="memberBirthday",defaultValue = "null")Long memberBirthday,
+//                           @RequestParam(name="memberPasswd",defaultValue = "null")String memberPasswd,
+//                           @RequestParam(name="memberEmail",defaultValue = "null")String memberEmail,
+//                           @RequestParam(name="memberWw",defaultValue = "null")String memberWw,
+//                           @RequestParam(name="memberLoginNum",defaultValue = "null")Integer memberLoginNum,
+//                           @RequestParam(name="createTime",defaultValue = "null")Date createTime,
+//                           @RequestParam(name="memberLoginTime",defaultValue = "null")Date memberLoginTime,
+//                           @RequestParam(name="memberOldLoginTime",defaultValue = "null")Date memberOldLoginTime,
+//                           @RequestParam(name="memberLoginIp",defaultValue = "null")String memberLoginIp,
+//                           @RequestParam(name="memberOldLoginIp",defaultValue = "null")String memberOldLoginIp,
+//                           @RequestParam(name="isSell",defaultValue = "true")Boolean isSell,
+//                           @RequestParam(name="memberState",defaultValue = "true")Boolean memberState
+//                           ){
+//        Memberinfo memberinfo=new Memberinfo(memberId,memberMobile,memberName,memberBirthday,memberPasswd,memberEmail,memberWw,memberLoginNum,createTime,memberLoginTime,memberOldLoginTime,memberLoginIp,memberOldLoginIp,isSell,memberState);
+//        memberinfoService.saveMember(memberinfo);
+//    }
 
+    @RequestMapping("saveMember")
+    @ResponseBody
+    public Object saveMember(@RequestParam(name="memberId",defaultValue = "null")Integer memberId, @RequestParam(name="memberMobile",defaultValue = "null")String memberMobile, @RequestParam(name="memberName",defaultValue = "null")String memberName,@RequestParam(name="memberPasswd",defaultValue = "null")String memberPasswd, @RequestParam(name="memberEmail",defaultValue = "null")String memberEmail){
+        if(memberinfoService.findByPK(memberId)!=null){
+            memberinfoService.deleteMember(memberId);
+        }
+        Memberinfo memberinfo=new Memberinfo(memberId,memberMobile,memberName,memberPasswd,memberEmail);
+        return memberinfoService.saveMember(memberinfo);
+    }
     @RequestMapping("deleteMember")
     @ResponseBody
     public Object deleteMember(@RequestParam(name ="id",defaultValue = "0")Integer memberId){
         return memberinfoService.deleteMember(memberId);
     }
+
+    @InitBinder
+    public void initBinder(ServletRequestDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+    }
+
 
 }

@@ -11,4 +11,5 @@ public interface MemberinfoService {
     List<Memberinfo> findAll();
     int saveMember(Memberinfo memberinfo);
     int deleteMember(int key);
+    Memberinfo findByPK(int key);
 }

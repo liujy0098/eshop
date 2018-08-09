@@ -99,6 +99,32 @@ public class Memberinfo implements Serializable {
     public Memberinfo() {
     }
 
+    public Memberinfo(Integer memberId, String memberMobile, String memberName, String memberPasswd, String memberEmail) {
+        this.memberId = memberId;
+        this.memberMobile = memberMobile;
+        this.memberName = memberName;
+        this.memberPasswd = memberPasswd;
+        this.memberEmail = memberEmail;
+    }
+
+    public Memberinfo(Integer memberId, String memberMobile, String memberName, Long memberBirthday, String memberPasswd, String memberEmail, String memberWw, Integer memberLoginNum, Date createTime, Date memberLoginTime, Date memberOldLoginTime, String memberLoginIp, String memberOldLoginIp, Boolean isSell, Boolean memberState) {
+        this.memberId = memberId;
+        this.memberMobile = memberMobile;
+        this.memberName = memberName;
+        this.memberBirthday = memberBirthday;
+        this.memberPasswd = memberPasswd;
+        this.memberEmail = memberEmail;
+        this.memberWw = memberWw;
+        this.memberLoginNum = memberLoginNum;
+        this.createTime = createTime;
+        this.memberLoginTime = memberLoginTime;
+        this.memberOldLoginTime = memberOldLoginTime;
+        this.memberLoginIp = memberLoginIp;
+        this.memberOldLoginIp = memberOldLoginIp;
+        this.isSell = isSell;
+        this.memberState = memberState;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Integer getMemberId() {
