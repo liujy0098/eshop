@@ -44,10 +44,14 @@ public class MemberController {
     }
 
     @RequestMapping("saveMember")
+    public void saveMember(Memberinfo memberinfo){
+        memberinfoService.saveMember(memberinfo);
+    }
+
+    @RequestMapping("deleteMember")
     @ResponseBody
-    public Object saveMember(@RequestParam(name = "memberId",defaultValue = "0")Integer memberId,@RequestParam(name = "memberMobile",defaultValue = "null")String memberMobile,@RequestParam(name = "memberName",defaultValue = "null")String memberName,@RequestParam(name = "memberPasswd",defaultValue = "null")String memberPasswd){
-        Memberinfo memberinfo=new Memberinfo(memberId,memberMobile,memberName,memberPasswd);
-        return memberinfoService.saveMember(memberinfo);
+    public Object deleteMember(@RequestParam(name ="id",defaultValue = "0")Integer memberId){
+        return memberinfoService.deleteMember(memberId);
     }
 
 }

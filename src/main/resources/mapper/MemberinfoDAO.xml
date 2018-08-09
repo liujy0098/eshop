@@ -48,7 +48,7 @@
       member_state, member_pic)
     values (#{memberId,jdbcType=INTEGER}, #{memberMobile,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR}, 
       #{memberBirthday,jdbcType=BIGINT}, #{memberPasswd,jdbcType=VARCHAR}, #{memberEmail,jdbcType=VARCHAR}, 
-      #{memberWw,jdbcType=VARCHAR}, #{memberLoginNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{memberWw,jdbcType=VARCHAR}, #{memberLoginNum,jdbcType=INTEGER},now(),
       #{memberLoginTime,jdbcType=TIMESTAMP}, #{memberOldLoginTime,jdbcType=TIMESTAMP}, 
       #{memberLoginIp,jdbcType=VARCHAR}, #{memberOldLoginIp,jdbcType=VARCHAR}, #{isSell,jdbcType=BIT}, 
       #{memberState,jdbcType=BIT}, #{memberPic,jdbcType=VARCHAR})
@@ -131,7 +131,7 @@
         #{memberLoginNum,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="memberLoginTime != null">
         #{memberLoginTime,jdbcType=TIMESTAMP},
