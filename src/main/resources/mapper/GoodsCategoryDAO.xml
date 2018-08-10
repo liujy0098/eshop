@@ -3,15 +3,16 @@
 <mapper namespace="jxufe.lwl.eshop.dao.GoodsCategoryDAO">
   <resultMap id="BaseResultMap" type="jxufe.lwl.eshop.entity.GoodsCategory">
     <id column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="cat_name" jdbcType="VARCHAR" property="catName" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="is_offline" jdbcType="INTEGER" property="isOffline" />
+    <result column="is_offline" jdbcType="BIT" property="isOffline" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    cat_id, cat_name, sort, description, is_offline, created_time, updated_time
+    cat_id, parent_id, cat_name, sort, description, is_offline, created_time, updated_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,18 +25,21 @@
     where cat_id = #{catId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="jxufe.lwl.eshop.entity.GoodsCategory">
-    insert into goods_category (cat_id, cat_name, sort, 
-      description, is_offline, created_time, 
-      updated_time)
-    values (#{catId,jdbcType=INTEGER}, #{catName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{isOffline,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedTime,jdbcType=TIMESTAMP})
+    insert into goods_category (cat_id, parent_id, cat_name, 
+      sort, description, is_offline, 
+      created_time, updated_time)
+    values (#{catId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{catName,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{isOffline,jdbcType=BIT}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="jxufe.lwl.eshop.entity.GoodsCategory">
     insert into goods_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="catId != null">
         cat_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
       </if>
       <if test="catName != null">
         cat_name,
@@ -60,6 +64,9 @@
       <if test="catId != null">
         #{catId,jdbcType=INTEGER},
       </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
       <if test="catName != null">
         #{catName,jdbcType=VARCHAR},
       </if>
@@ -70,7 +77,7 @@
         #{description,jdbcType=VARCHAR},
       </if>
       <if test="isOffline != null">
-        #{isOffline,jdbcType=INTEGER},
+        #{isOffline,jdbcType=BIT},
       </if>
       <if test="createdTime != null">
         #{createdTime,jdbcType=TIMESTAMP},
@@ -83,6 +90,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="jxufe.lwl.eshop.entity.GoodsCategory">
     update goods_category
     <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
       <if test="catName != null">
         cat_name = #{catName,jdbcType=VARCHAR},
       </if>
@@ -93,7 +103,7 @@
         description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="isOffline != null">
-        is_offline = #{isOffline,jdbcType=INTEGER},
+        is_offline = #{isOffline,jdbcType=BIT},
       </if>
       <if test="createdTime != null">
         created_time = #{createdTime,jdbcType=TIMESTAMP},
@@ -106,10 +116,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="jxufe.lwl.eshop.entity.GoodsCategory">
     update goods_category
-    set cat_name = #{catName,jdbcType=VARCHAR},
+    set parent_id = #{parentId,jdbcType=INTEGER},
+      cat_name = #{catName,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
-      is_offline = #{isOffline,jdbcType=INTEGER},
+      is_offline = #{isOffline,jdbcType=BIT},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where cat_id = #{catId,jdbcType=INTEGER}

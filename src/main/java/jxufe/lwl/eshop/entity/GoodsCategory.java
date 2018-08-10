@@ -14,6 +14,11 @@ public class GoodsCategory implements Serializable {
     private Integer catId;
 
     /**
+     * 父级分类id,0表示根节点
+     */
+    private Integer parentId;
+
+    /**
      * 分类名称
      */
     private String catName;
@@ -31,7 +36,7 @@ public class GoodsCategory implements Serializable {
     /**
      * 类名是否禁用 0禁用。1表示启用
      */
-    private Integer isOffline;
+    private Boolean isOffline;
 
     private Date createdTime;
 
@@ -48,6 +53,14 @@ public class GoodsCategory implements Serializable {
 
     public void setCatId(Integer catId) {
         this.catId = catId;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public String getCatName() {
@@ -74,11 +87,11 @@ public class GoodsCategory implements Serializable {
         this.description = description;
     }
 
-    public Integer getIsOffline() {
+    public Boolean getIsOffline() {
         return isOffline;
     }
 
-    public void setIsOffline(Integer isOffline) {
+    public void setIsOffline(Boolean isOffline) {
         this.isOffline = isOffline;
     }
 
@@ -111,6 +124,7 @@ public class GoodsCategory implements Serializable {
         }
         GoodsCategory other = (GoodsCategory) that;
         return (this.getCatId() == null ? other.getCatId() == null : this.getCatId().equals(other.getCatId()))
+            && (this.getParentId() == null ? other.getParentId() == null : this.getParentId().equals(other.getParentId()))
             && (this.getCatName() == null ? other.getCatName() == null : this.getCatName().equals(other.getCatName()))
             && (this.getSort() == null ? other.getSort() == null : this.getSort().equals(other.getSort()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
@@ -124,6 +138,7 @@ public class GoodsCategory implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getCatId() == null) ? 0 : getCatId().hashCode());
+        result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
         result = prime * result + ((getCatName() == null) ? 0 : getCatName().hashCode());
         result = prime * result + ((getSort() == null) ? 0 : getSort().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
@@ -140,6 +155,7 @@ public class GoodsCategory implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", catId=").append(catId);
+        sb.append(", parentId=").append(parentId);
         sb.append(", catName=").append(catName);
         sb.append(", sort=").append(sort);
         sb.append(", description=").append(description);
