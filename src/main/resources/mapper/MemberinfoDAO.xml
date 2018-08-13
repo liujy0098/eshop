@@ -222,7 +222,7 @@
     where member_id = #{memberId,jdbcType=INTEGER}
   </update>
 
-  <select id="findAll">
+  <select id="findAll" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"></include>
     FROM memberinfo
