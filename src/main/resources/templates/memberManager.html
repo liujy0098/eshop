@@ -19,6 +19,7 @@
                 url: '/memberinfo/pageList',
                 pagination:true,
                 fitColumns:true,
+                scrollbarSize:0,
                 title:"会员管理",
                 toolbar: '#btnbox',
 
@@ -58,7 +59,7 @@
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true"onclick="javascript:$('#tt').edatagrid('destroyRow')"> 删除</a>
     </div>
 
-<table id="tt"  width="100%" singleSelect="true">
+<table id="tt"  width="100%" singleSelect="true" fitColumns="true">
     <thead>
     <tr>
         <th field="memberId" editor="text"   >ID</th>
