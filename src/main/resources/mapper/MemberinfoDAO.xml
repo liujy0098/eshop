@@ -221,4 +221,10 @@
       member_pic = #{memberPic,jdbcType=VARCHAR}
     where member_id = #{memberId,jdbcType=INTEGER}
   </update>
+
+  <select id="findAll">
+    SELECT
+    <include refid="Base_Column_List"></include>
+    FROM memberinfo
+  </select>
 </mapper>
