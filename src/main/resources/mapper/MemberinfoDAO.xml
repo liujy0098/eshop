@@ -24,11 +24,6 @@
     member_ww, member_login_num, create_time, member_login_time, member_old_login_time, 
     member_login_ip, member_old_login_ip, is_sell, member_state, member_pic
   </sql>
-  <select id="findAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from memberinfo
-  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
