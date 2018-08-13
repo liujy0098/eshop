@@ -22,9 +22,9 @@
                 title: "分类管理",
                 toolbar: '#btnbox',
 
-                saveUrl: '/memberinfo/saveMember',
-                updateUrl: '/memberinfo/saveMember',
-                destroyUrl: '/memberinfo/deleteMember',
+                saveUrl: '/category/saveCategory',
+                updateUrl: '/category/saveCategory',
+                destroyUrl: '/category/deleteCategory',
             });
             $('#tt').datagrid('reload');
         });
@@ -64,16 +64,17 @@
            onclick="javascript:$('#tt').edatagrid('destroyRow')"> 删除</a>
     </div>
 
-    <table id="tt" width="100%" singleSelect="true">
+    <table id="tt"  singleSelect="true">
         <thead>
         <tr>
             <th field="catId" editor="text">ID</th>
-            <th field="parentId" formatter="level" editor="{type:'textbox',options:{required:true}}">分类等级</th>
+            <th field="parentId" formatter="level" editor="text">分类等级</th>
             <th field="catName" editor="text">名字</th>
-            <th field="sort" sortable="true">排序</th>
+            <th field="sort" editor="text" sortable="true">排序</th>
+            <th field="description" editor="text" >描述</th>
             <th field="isOffline" formatter="offline" editor="text">是否启用</th>
-            <th field="createdTime" editor="text">创建时间</th>
-            <th field="updatedTime" editor="text">更新时间</th>
+            <th field="createdTime" >创建时间</th>
+            <th field="updatedTime">更新时间</th>
         </tr>
         </thead>
     </table>

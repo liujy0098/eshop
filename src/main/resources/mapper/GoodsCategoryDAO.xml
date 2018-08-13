@@ -30,7 +30,7 @@
       created_time, updated_time)
     values (#{catId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{catName,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{isOffline,jdbcType=BIT}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+     now(), #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="jxufe.lwl.eshop.entity.GoodsCategory">
     insert into goods_category
@@ -80,7 +80,7 @@
         #{isOffline,jdbcType=BIT},
       </if>
       <if test="createdTime != null">
-        #{createdTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
@@ -125,4 +125,10 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where cat_id = #{catId,jdbcType=INTEGER}
   </update>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM goods_category
+  </select>
 </mapper>
