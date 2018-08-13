@@ -9,6 +9,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 
     <script>
     $(document).ready(function () {
@@ -25,7 +26,13 @@
             toolbar:'#toolbar',
             onClickCell:function (field, value, row) {
                 if(field=="articlePicUrl"){
-                    $("#img").attr('src',host()+"/upload/"+value);
+                    $("#dataForm")[0].reset();
+                    $("#fileForm")[0].reset();
+
+                    $("#fileForm").attr('action',host()+"/upload");
+                    $("#dataForm").attr('action',host()+"/article/update");
+                    $("#picArticleId").val(row.articleId);
+                    $("#img").attr('src',host()+"/pic/"+value);
                     $("#picBox").modal('show');
                 }
 
@@ -56,7 +63,7 @@
                 field: 'articlePicUrl',
                 title: '图片',
                 formatter:function (value,row) {
-                    return "<img src='" + host() + "/upload/" +value+"' height='20px'></img>"
+                    return "<img src='" + host() + "/pic/" +value+"' height='20px'></img>"
                 }
             }, {
                 field: 'articleContent',
@@ -103,7 +110,23 @@
         $("#uncheckAll").click(function () {
             $("#table").bootstrapTable('uncheckAll');
         });
+
+        $("#choosePic").click(function () {
+            $("#fileInput").click();
+        })
+        $("#picSubmit").click(function () {
+            $("#dataForm").submit();
+        })
     });
+    function upload(){
+        $("#fileForm").ajaxSubmit({
+            success:function (data) {
+                $("#picArticlePicUrl").val(data);
+                $("#img").attr('src',host()+"/pic/"+data);
+            },
+        });
+
+    }
     function host() {
         return "http://"+window.location.host;
     }
@@ -180,17 +203,18 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <img id="img" class="img-thumbnail ">
+                    <img id="img" class="img-thumbnail">
+                    <form id="fileForm" enctype="multipart/form-data"  method="post" style="display: none">
+                        <input name="pic" id="fileInput" type="file" onchange="upload()">
+                    </form>
+                    <form id="dataForm" style="display: none">
+                        <input name="articleId" id="picArticleId" type="txet">
+                        <input name="articlePicUrl" id="picArticlePicUrl" type="text">
+                    </form>
                 </div>
-                <form id="fileForm" style="display: none">
-                    <input name="pic" id="fileInput" type="file">
-                </form>
-                <form id="dataForm" style="display: none">
-                    <input name="articleId" id="picArticleId" type="txet">
-                    <input name="articlePicUrl" id="picArticlePicUrl" type="text">
-                </form>
                 <div class="modal-footer">
-                    <button id="submitPic" class="btn btn-warning" type="button">提交</button>
+                    <button id="choosePic" class="btn btn-info pull-left">修改图片</button>
+                    <button id="picSubmit" class="btn btn-warning" type="button">提交</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>

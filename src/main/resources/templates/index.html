@@ -33,7 +33,7 @@
         }
 
         #copyright{
-            background-color: #3c8b3c;
+            background-color: #5f5f5f;
             height: 100px;
         }
         #author{
@@ -53,10 +53,10 @@
 
     <div id="bar" class="col-md-12"></div>
     <div id="nav" class="col-md-2">
-        </span><button id="b1" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
+        <button id="b1" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
         <button id="articleManager" class="btn btn-primary col-md-12"><i class="fa fa-file-text"></i> 文章管理</button>
         <button id="commentManager" class="btn btn-primary col-md-12"><i class="fa fa-comment"></i> 评论管理</button>
-        <button id="order" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
+        <button id="orderManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
         <button id="b5" class="btn btn-primary col-md-12"><i class="fa fa-picture-o"></i> 广告管理</button>
         <button id="b6" class="btn btn-primary col-md-12"><i class="fa fa-shopping-bag"></i> 商品管理</button>
         <button id="b7" class="btn btn-primary col-md-12"><i class="fa fa-filter"></i> 类别管理</button>
@@ -68,17 +68,18 @@
     </div>
 </div>
 <script>
-    $("#b1").click(function (){change("xx")});
-    $("#articleManager").click(function (){change("/articleManager")});
-    $("#commentManager").click(function (){change("/commentManager")});
-    $("#order").click(function (){change("/orderManager")});
-    $("#b5").click(function (){change("xx")});
-    $("#b6").click(function (){change("xx")});
-    $("#b7").click(function (){change("xx")});
-    $("#b8").click(function (){change("xx")});
 
-    function change(url) {
-        $("#workspace").attr("src",url);
+    $("button").click(function () {$("button").attr('class','btn btn-primary col-md-12');})
+
+    set("articleManager");
+    set("commentManager");
+    set("orderManager")
+
+    function set(module) {
+        $("#"+module).click(function (){
+            $("#"+module).attr('class','btn btn-success col-md-12');
+            $("#workspace").attr("src","/"+module)
+        });
     }
 </script>
 </body>
