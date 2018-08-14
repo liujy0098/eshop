@@ -1,69 +1,188 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>jQuery EasyUI</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
-	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
-	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>Title</title>
 
-	<script type="text/javascript" src="easyui/jquery.min.js"></script>
-	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="jquery.edatagrid.js"></script>
-	<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
-        $(function(){
-            $('#tt').edatagrid({
-                idField:'orderId',
-                rownumbers:true,
-                fitColumns:true,
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+	<script>
+        $(document).ready(function () {
+            $('#table').bootstrapTable({
                 url: '/order/list',
-                saveUrl: '/order/add',
-                updateUrl: '/order/update',
-                destroyUrl: '/order/delete'
+                striped:true,
+                height:580,
+                pagination:true,
+                paginationLoop:false,
+                pageSize:11,
+                showRefresh:true,
+                clickToSelect:true,
+                search:true,
+                toolbar:'#toolbar',
+                onDblClickRow:function(row){
+                    $("#title").text("编辑该纪录");
+                    $("#submit").attr('class','btn btn-warning');
+                    $("#submit").text("修改");
+                    $("#form").attr('action',host()+'/order/update');
+                    $("#form")[0].reset();
+                    $("#orderId").val(row.orderId);
+                    $("#orderSn").val(row.orderSn);
+                    $("#buyerId").val(row.buyerId);
+                    $("#addTime").val(row.addTime);
+                    $("#paymentCode").val(row.paymentCode);
+                    $("#finnshedTime").val(row.finnshedTime);
+                    $("#orderAmount").val(row.orderAmount);
+                    $("#orderState").val(row.orderState);
+                    $("#formBox").modal('show');
+                },
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'orderId',
+                    title: 'ID'
+                }, {
+                    field: 'orderSn',
+                    title: '订单编号'
+
+                }, {
+                    field: 'buyerId',
+                    title: '买家ID'
+                }, {
+                    field: 'addTime',
+                    title: '下单时间'
+                }, {
+                    field: 'paymentCode',
+                    title: '支付代码'
+                }, {
+                    field: 'finnshedTime',
+                    title: '完成时间'
+                }, {
+                    field: 'orderAmount',
+                    title: '总价格'
+                }, {
+                    field: 'orderState',
+                    title: '状态'
+                }]
+            });
+            $('#remove').click(function () {
+                var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
+                    return row.orderId;
+                });
+                var json=JSON.stringify(ids);
+                $.ajax({
+                    type:'post',
+                    url:host()+'/order/remove',
+                    contentType : 'application/json;charset=utf-8',
+                    data : json
+                });
+                $('#table').bootstrapTable('remove', {
+                    field: 'orderId',
+                    values: ids
+                });
+            });
+            $("#add").click(function () {
+                $("#form")[0].reset();
+                $("#title").text("添加新纪录");
+                $("#submit").attr('class','btn btn-info');
+                $("#submit").text("添加");
+                $("#form").attr('action',host()+'/order/add');
+
+                $("#formBox").modal('show');
+            });
+            $("#submit").click(function () {
+                $("#form").submit();
+            });
+            $("#checkAll").click(function () {
+                $("#table").bootstrapTable('checkAll');
+            });
+            $("#uncheckAll").click(function () {
+                $("#table").bootstrapTable('uncheckAll');
             });
         });
+        function host() {
+            return "http://"+window.location.host;
+        }
 	</script>
-	<style type="text/css">
-		a{
-			width: 50px;
-			height: 30px;
-
-		}
-		#btnbox{
-			height: 40px;
-			padding: 10px;
+	<style>
+		.container-fliud{
+			margin: 0px 15px;
 		}
 	</style>
 </head>
 <body>
-<div id="container" class="easyui-layout">
-	<div id="btnbox">
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('addRow')"><i class="fa fa-plus"></i> 添加</a>
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('saveRow')"><i class="fa fa-hdd-o"></i> 保存</a>
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('cancelRow')"><i class="fa fa-times"></i> 取消</a>
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('destroyRow')"><i class="fa fa-trash"></i> 删除</a>
+<div class="container-fliud">
+	<div id="toolbar">
+		<button id="checkAll" class="btn btn-default">全选</button>
+		<button id="uncheckAll" class="btn btn-default">反选</button>
+		<button id="remove" class="btn btn-danger">批量删除</button>
+		<button id="add" class="btn btn-info">添加</button>
+	</div>
+	<table id="table"></table>
+
+	<div id="formBox" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="title"></h4>
+				</div>
+				<div class="modal-body">
+					<form id="form" class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-1 control-label" >ID:</label>
+							<div class="col-sm-2">
+								<input name="orderId" id="orderId" type="number" class="form-control">
+							</div>
+
+							<label class="col-sm-2 control-label">订单编号:</label>
+							<div class="col-sm-3">
+								<input name="orderSn" id="orderSn" type="number" class="form-control">
+							</div>
+
+							<label class="col-sm-2 control-label">买家ID:</label>
+							<div class="col-sm-2">
+								<input name="buyerId" id="buyerId" type="number" class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label ">下单时间:</label>
+							<div class="col-sm-10">
+								<input name="addTime" id="addTime" type="date" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">完成时间:</label>
+							<div class="col-sm-10">
+								<input name="finnshedTime" id="finnshedTime" type="date" class="form-control"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">总价格:</label>
+							<div class="col-sm-4">
+								<input name="orderAmount" id="orderAmount" type="number" class="form-control"></input>
+							</div>
+
+							<label class="col-sm-2 control-label">状态:</label>
+							<div class="col-sm-4">
+								<input name="orderState" id="orderState" type="text" class="form-control"></input>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button id="submit" type="button">提交</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
-	<table id="tt" singleSelect="true">
-		<thead>
-		<tr>
-			<th field="orderId" width="100" editor="{type:'numberbox',options:{required:true}}" required="true">订单索引id</th>
-			<th field="orderSn" width="200" editor="text">订单编号</th>
-			<th field="buyerId" width="100" editor="text">买家id</th>
-			<th field="buyerName" width="100" editor="text">买家姓名</th>
-			<th field="buyerTel" width="100" editor="text">买家的联系电话</th>
-			<th field="addTime" width="100" editor="text">订单生成时间</th>
-			<th field="paymentCode" width="100" editor="text">支付方式名称代码</th>
-			<th field="finnshedTime" width="100" editor="text">订单完成时间</th>
-			<th field="orderAmount" width="100" editor="text">订单总价格</th>
-			<th field="orderState" width="100" editor="text">订单状态</th>
-			<th field="createdTime" width="100" editor="text">createdTime</th>
-			<th field="updatedTime" width="100" editor="text">updatedTime</th>
-		</tr>
-		</thead>
-	</table>
 </div>
-
 </body>
 </html>
