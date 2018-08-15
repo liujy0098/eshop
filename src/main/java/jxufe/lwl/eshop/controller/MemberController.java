@@ -10,10 +10,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,8 +78,25 @@ public class MemberController {
     }
     @RequestMapping("deleteMember")
     @ResponseBody
-    public Object deleteMember(@RequestParam(name ="id",defaultValue = "0")Integer memberId){
-        return memberinfoService.deleteMember(memberId);
+    public int deleteMember(@RequestBody int[] ids){
+        int count=0;
+        for (int id:ids
+             ) {
+            memberinfoService.deleteMember(id);
+            count++;
+        }
+        return count;
+    }
+
+    @RequestMapping("add")
+    @ResponseBody
+    public Object addMember(Memberinfo memberinfo){
+        return memberinfoService.saveMember(memberinfo);
+    }
+    @RequestMapping("update")
+    @ResponseBody
+    public Object updateMember(Memberinfo memberinfo){
+        return memberinfoService.updateMember(memberinfo);
     }
 
     @InitBinder
