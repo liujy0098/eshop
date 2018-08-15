@@ -12,4 +12,5 @@ public interface MemberinfoService {
     int saveMember(Memberinfo memberinfo);
     int deleteMember(int key);
     Memberinfo findByPK(int key);
+    public int updateMember(Memberinfo memberinfo);
 }
