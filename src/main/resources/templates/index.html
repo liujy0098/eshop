@@ -53,7 +53,7 @@
 
     <div id="bar" class="col-md-12"></div>
     <div id="nav" class="col-md-2">
-        <button id="b1" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
+        <button id="member2Manager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
         <button id="articleManager" class="btn btn-primary col-md-12"><i class="fa fa-file-text"></i> 文章管理</button>
         <button id="commentManager" class="btn btn-primary col-md-12"><i class="fa fa-comment"></i> 评论管理</button>
         <button id="orderManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
@@ -71,6 +71,7 @@
 
     $("button").click(function () {$("button").attr('class','btn btn-primary col-md-12');})
 
+    set("member2Manager");
     set("articleManager");
     set("commentManager");
     set("orderManager")
