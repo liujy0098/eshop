@@ -20,6 +20,13 @@
     order_id, order_sn, buyer_id, buyer_name, buyer_tel, add_time, payment_code, payment_time, 
     finnshed_time, order_amount, order_state, created_time, updated_time
   </sql>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    *
+    from orderinfo
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
