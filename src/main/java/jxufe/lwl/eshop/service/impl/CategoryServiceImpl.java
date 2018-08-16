@@ -48,4 +48,9 @@ public class CategoryServiceImpl implements CategoryService {
     public int saveCategory(GoodsCategory goodsCategory){
         return goodsCategoryDAO.insertSelective(goodsCategory);
     }
+
+    @Override
+    public int updateCategory(GoodsCategory goodsCategory) {
+        return goodsCategoryDAO.updateByPrimaryKeySelective(goodsCategory);
+    }
 }

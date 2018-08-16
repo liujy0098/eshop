@@ -14,4 +14,5 @@ public interface CategoryService {
     int deleteCategory(int catId);
     GoodsCategory findByPK(int catId);
     int saveCategory(GoodsCategory goodsCategory);
+    int updateCategory(GoodsCategory goodsCategory);
 }

@@ -5,12 +5,14 @@ import com.github.pagehelper.PageInfo;
 import jxufe.lwl.eshop.entity.GoodsCategory;
 import jxufe.lwl.eshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,13 @@ public class CategoryController {
 
 
 
+
+
+    @RequestMapping("list")
+    @ResponseBody
+    public Object list(){
+        return categoryService.findAll();
+    }
     @RequestMapping("pageList")
     @ResponseBody
     public Object findAll(@RequestParam(name="page",defaultValue = "1")int page,@RequestParam(name = "rows",defaultValue = "10")int rows){
@@ -53,8 +62,14 @@ public class CategoryController {
 
     @RequestMapping("deleteCategory")
     @ResponseBody
-    public Object deleteCategory(@RequestParam(name = "catId",defaultValue = "0")int catId){
-        return categoryService.deleteCategory(catId);
+    public Object deleteCategory(@RequestBody int[] ids){
+        int count=0;
+        for (int id:ids
+                ) {
+            categoryService.deleteCategory(id);
+            count++;
+        }
+        return count;
     }
 
     @RequestMapping("saveCategory")
@@ -74,5 +89,24 @@ public class CategoryController {
         goodsCategory.setSort(sort);
         goodsCategory.setIsOffline(isOffline);
         return categoryService.saveCategory(goodsCategory);
+    }
+
+    @RequestMapping("update")
+    public Object updateCategory(GoodsCategory goodsCategory){
+        categoryService.updateCategory(goodsCategory);
+        return "category2Manager";
+    }
+
+    @RequestMapping("add")
+    public Object addCategory(GoodsCategory goodsCategory){
+        categoryService.saveCategory(goodsCategory);
+        return "category2Manager";
+    }
+
+
+    @InitBinder
+    public void initBinder(ServletRequestDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
     }
 }
