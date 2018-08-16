@@ -44,6 +44,7 @@
                 $("#form").attr('action',host()+'/article/update');
                 $("#form")[0].reset();
                 $("#articleId").val(row.articleId);
+                $("#articleId").attr("readonly",true);
                 $("#articleTitle").val(row.articleTitle);
                 $("#articlePicUrl").val(row.articlePicUrl);
                 $("#articleContent").val(row.articleContent);
@@ -94,6 +95,7 @@
         });
         $("#add").click(function () {
             $("#form")[0].reset();
+            $("#articleId").attr("readonly",false);
             $("#title").text("添加新纪录");
             $("#submit").attr('class','btn btn-info');
             $("#submit").text("添加");
