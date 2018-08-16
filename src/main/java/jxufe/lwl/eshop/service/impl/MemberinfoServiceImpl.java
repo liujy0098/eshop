@@ -37,5 +37,9 @@ public class MemberinfoServiceImpl implements MemberinfoService{
         return memberinfoDAO.selectByPrimaryKey(key);
     }
 
+    public int updateMember(Memberinfo memberinfo){
+       return  memberinfoDAO.updateByPrimaryKeySelective(memberinfo);
+    }
+
 
 }

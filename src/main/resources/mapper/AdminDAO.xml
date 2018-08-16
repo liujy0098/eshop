@@ -16,6 +16,14 @@
     admin_id, admin_name, admin_password, admin_login_num, admin_is_super, is_disable, 
     admin_login_time, created_time, updated_time
   </sql>
+
+  <select id="login" resultMap="BaseResultMap">
+    select
+    *
+    from admin
+    where admin_login_num = #{adminLoginNum} AND admin_password = #{adminPassword}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

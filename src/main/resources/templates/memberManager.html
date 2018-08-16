@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>jQuery EasyUI</title>
+    <title>manager</title>
 
     <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
@@ -18,26 +18,52 @@
                 idField:'memberId',
                 url: '/memberinfo/pageList',
                 pagination:true,
+                fitColumns:true,
+                scrollbarSize:0,
+                title:"会员管理",
+                toolbar: '#btnbox',
+
                 saveUrl: '/memberinfo/saveMember',
                 updateUrl: '/memberinfo/saveMember',
-                destroyUrl: '/memberinfo/deleteMember'
+                destroyUrl: '/memberinfo/deleteMember',
             });
+            $('#tt').datagrid('reload');
         });
+        function sell(value,row,index){
+            if(value==1){
+                return "允许";
+            }else if(value==0){
+                return "禁止";
+            }
+        }
+        function state(value,row,index){
+            if(value==1){
+                return "开启";
+            }else if(value==0){
+                return "关闭";
+            }
+        }
+        function photo(value,row,index){
+            return "<img src='"+value+"' width='20' height='20'>";
+        }
+
     </script>
 </head>
 <body>
 <h1>会员管理</h1>
 <div id="container" class="easyui-layout">
-    <a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('addRow')"><i class="fa fa-plus"></i> 添加</a>
-    <a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('saveRow')"><i class="fa fa-hdd-o"></i> 保存</a>
-    <a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('cancelRow')"><i class="fa fa-times"></i> 取消</a>
-    <a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('destroyRow')"><i class="fa fa-trash"></i> 删除</a>
-</div>
-<table id="tt"   singleSelect="true">
+    <div id="btnbox">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="javascript:$('#tt').edatagrid('addRow')"> 添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="javascript:$('#tt').edatagrid('saveRow')"> 保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="javascript:$('#tt').edatagrid('cancelRow')"> 取消</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true"onclick="javascript:$('#tt').edatagrid('destroyRow')"> 删除</a>
+    </div>
+
+<table id="tt"  width="100%" singleSelect="true" fitColumns="true">
     <thead>
     <tr>
-        <th field="memberId" editor="{type:'numberbox',options:{required:true}}"   >ID</th>
-        <th field="memberMobile"  editor="text">手机号</th>
+        <th field="memberId" editor="text"   >ID</th>
+        <th field="memberMobile"  editor="{type:'textbox',options:{required:true}}">手机号</th>
         <th field="memberName"  editor="text">名字</th>
         <th field="memberBirthday"  >生日</th>
         <th field="memberPasswd"  editor="text">密码</th>
@@ -47,12 +73,12 @@
         <th field="createTime"  >注册时间</th>
         <th field="memberLoginTime"  >当前登录时间</th>
         <th field="memberOldLoginTime"  >上次登录时间</th>
-        <th field="memberLoginIp"  >当前登录ip</th>
-        <th field="memberOldLoginIp"  >上次登录ip</th>
-        <th field="isSell"  editor="text">发布商品权限</th>
-        <th field="memberState"  editor="text">会员开启状态</th>
+        <th field="isSell"  editor="text" formatter="sell">发布商品权限</th>
+        <th field="memberState"  editor="text" formatter="state">会员开启状态</th>
+        <th field="memberPic"   formatter="photo">头像</th>
     </tr>
     </thead>
 </table>
+</div>
 </body>
 </html>

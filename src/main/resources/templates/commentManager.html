@@ -1,65 +1,165 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>jQuery EasyUI</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
-	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
-	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<script type="text/javascript" src="easyui/jquery.min.js"></script>
-	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="jquery.edatagrid.js"></script>
-	<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$('#tt').edatagrid({
-                idField:'scommId',
-                rownumbers:true,
-				fitColumns:true,
-				url: '/comment/list',
-				saveUrl: '/comment/add',
-				updateUrl: '/comment/update',
-				destroyUrl: '/comment/delete'
-			});
-		});
-	</script>
-	<style type="text/css">
-		a{
-			width: 50px;
-			height: 30px;
+	<meta charset="UTF-8">
+	<title>Title</title>
 
-		}
-		#btnbox{
-			height: 40px;
-			padding: 10px;
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+	<script>
+        $(document).ready(function () {
+            $('#table').bootstrapTable({
+                url: '/comment/list',
+                striped:true,
+				height:580,
+                pagination:true,
+                paginationLoop:false,
+                pageSize:11,
+                showRefresh:true,
+                clickToSelect:true,
+                search:true,
+                toolbar:'#toolbar',
+                onDblClickRow:function(row){
+                    $("#title").text("编辑该纪录");
+                    $("#submit").attr('class','btn btn-warning');
+                    $("#submit").text("修改");
+                    $("#form").attr('action',host()+'/comment/update');
+                    $("#form")[0].reset();
+                    $("#scommId").val(row.scommId);
+                    $("#goodisId").val(row.goodisId);
+                    $("#scommMemberid").val(row.scommMemberid);
+                    $("#scommContent").val(row.scommContent);
+                    $("#scommTime").val(row.scommTime);
+                    $("#formBox").modal('show');
+                },
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'scommId',
+                    title: 'ID'
+                }, {
+                    field: 'goodisId',
+                    title: '商品ID'
+
+                }, {
+                    field: 'scommMemberid',
+                    title: '会员ID'
+                }, {
+                    field: 'scommContent',
+                    title: '评论内容'
+                }, {
+                    field: 'scommTime',
+                    title: '评论时间'
+                }]
+            });
+            $('#remove').click(function () {
+                var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
+                    return row.scommId;
+                });
+                var json=JSON.stringify(ids);
+                $.ajax({
+                    type:'post',
+                    url:host()+'/comment/remove',
+                    contentType : 'application/json;charset=utf-8',
+                    data : json
+                });
+                $('#table').bootstrapTable('remove', {
+                    field: 'scommId',
+                    values: ids
+                });
+            });
+            $("#add").click(function () {
+                $("#form")[0].reset();
+                $("#title").text("添加新纪录");
+                $("#submit").attr('class','btn btn-info');
+                $("#submit").text("添加");
+                $("#form").attr('action',host()+'/comment/add');
+
+                $("#formBox").modal('show');
+            });
+            $("#submit").click(function () {
+                $("#form").submit();
+            });
+            $("#checkAll").click(function () {
+                $("#table").bootstrapTable('checkAll');
+            });
+            $("#uncheckAll").click(function () {
+                $("#table").bootstrapTable('uncheckAll');
+            });
+        });
+        function host() {
+            return "http://"+window.location.host;
+        }
+	</script>
+	<style>
+		.container-fliud{
+			margin: 0px 15px;
 		}
 	</style>
 </head>
 <body>
-<div id="container" class="easyui-layout">
-	<div id="btnbox">
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('addRow')"><i class="fa fa-plus"></i> 添加</a>
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('saveRow')"><i class="fa fa-hdd-o"></i> 保存</a>
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('cancelRow')"><i class="fa fa-times"></i> 取消</a>
-		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#tt').edatagrid('destroyRow')"><i class="fa fa-trash"></i> 删除</a>
+<div class="container-fliud">
+	<div id="toolbar">
+		<button id="checkAll" class="btn btn-default">全选</button>
+		<button id="uncheckAll" class="btn btn-default">反选</button>
+		<button id="remove" class="btn btn-danger">批量删除</button>
+		<button id="add" class="btn btn-info">添加</button>
+	</div>
+	<table id="table"></table>
+
+	<div id="formBox" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="title"></h4>
+				</div>
+				<div class="modal-body">
+					<form id="form" class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-1 control-label" >ID:</label>
+							<div class="col-sm-2">
+								<input name="scommId" id="scommId" type="number" class="form-control">
+							</div>
+
+							<label class="col-sm-2 control-label">商品ID:</label>
+							<div class="col-sm-2">
+								<input name="goodisId" id="goodisId" type="number" class="form-control">
+							</div>
+
+							<label class="col-sm-2 control-label">会员ID:</label>
+							<div class="col-sm-2">
+								<input name="scommMemberid" id="scommMemberid" type="number" class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label ">评论时间:</label>
+							<div class="col-sm-10">
+								<input name="scommTime" id="scommTime" type="date" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">评论内容:</label>
+							<div class="col-sm-10">
+								<textarea name="scommContent" id="scommContent" type="text" class="form-control"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button id="submit" type="button">提交</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
-		<table id="tt" singleSelect="true">
-			<thead>
-			<tr>
-				<th field="scommId" width="100" editor="{type:'numberbox',options:{required:true}}">评论id</th>
-				<th field="goodisId" width="200" editor="text" >评论的商品ID</th>
-				<th field="scommContent" width="100" editor="text">评论内容</th>
-				<th field="scommMemberid" width="100" editor="text">会员id</th>
-				<th field="scommMembername" width="100" editor="text">会员名称</th>
-				<th field="scommMemberavatar" width="100" editor="text">会员头像</th>
-				<th field="createTime" width="100" editor="text">创建时间</th>
-				<th field="updateTime" width="100" editor="text">修改时间</th>
-				<th field="scommTime" width="100" editor="text">评论时间</th>
-			</tr>
-			</thead>
-		</table>
-	</div>
-
+</div>
 </body>
 </html>

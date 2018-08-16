@@ -16,8 +16,16 @@
     scomm_id, goodis_id, scomm_content, scomm_memberid, scomm_membername, scomm_memberavatar, 
     create_time, update_time, scomm_time
   </sql>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    *
+    from goods_comment
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from goods_comment
     where scomm_id = #{scommId,jdbcType=INTEGER}

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>manager</title>
+
+    <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+    <script type="text/javascript" src="easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+
+    <script type="text/javascript" src="jquery.edatagrid.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#tt').edatagrid({
+                idField: 'catId',
+                url: '/category/pageList',
+                pagination: true,
+                fitColumns: true,
+                scrollbarSize:0,
+                title: "分类管理",
+                toolbar: '#btnbox',
+
+
+                saveUrl: '/category/saveCategory',
+                updateUrl: '/category/saveCategory',
+                destroyUrl: '/category/deleteCategory',
+            });
+            $('#tt').datagrid('reload');
+        });
+
+        function level(value, row, index) {
+            if (value == 0) {
+                return "一级分类";
+            }
+            else if (value == 1) {
+                return "二级分类";
+            }
+            else if (value == 2) {
+                return "三级分类";
+            }
+        }
+        function offline(value, row, index) {
+            if (value == 1) {
+                return "启用";
+            }
+            else if (value == 0) {
+                return "禁用";
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>分类管理</h1>
+<div id="container" class="easyui-layout">
+    <div id="btnbox">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+           onclick="javascript:$('#tt').edatagrid('addRow')"> 添加</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+           onclick="javascript:$('#tt').edatagrid('saveRow')"> 保存</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
+           onclick="javascript:$('#tt').edatagrid('cancelRow')"> 取消</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true"
+           onclick="javascript:$('#tt').edatagrid('destroyRow')"> 删除</a>
+    </div>
+
+    <table id="tt"  style="width: 100%" singleSelect="true" >
+        <thead>
+        <tr>
+            <th field="catId" width="40" editor="text">ID</th>
+            <th field="parentId" width="40" formatter="level" editor="text">分类等级</th>
+            <th field="catName" width="50" editor="text">名字</th>
+            <th field="sort" width="40" editor="text" sortable="true">排序</th>
+            <th field="description" width="80" editor="text" >描述</th>
+            <th field="isOffline" width="40" formatter="offline" editor="text">是否启用</th>
+            <th field="createdTime" width="80">创建时间</th>
+            <th field="updatedTime">更新时间</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+</body>
+</html>
