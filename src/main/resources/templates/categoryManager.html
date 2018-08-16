@@ -1,85 +1,215 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>manager</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 
-    <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
-    <script type="text/javascript" src="easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
 
-    <script type="text/javascript" src="jquery.edatagrid.js"></script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('#tt').edatagrid({
-                idField: 'catId',
-                url: '/category/pageList',
+    <script>
+        $(document).ready(function () {
+            $('#table').bootstrapTable({
+                url: '/category/list',
+                striped: true,
+                height: 580,
                 pagination: true,
-                fitColumns: true,
-                scrollbarSize:0,
-                title: "分类管理",
-                toolbar: '#btnbox',
-
-
-                saveUrl: '/category/saveCategory',
-                updateUrl: '/category/saveCategory',
-                destroyUrl: '/category/deleteCategory',
+                paginationLoop: false,
+                pageSize: 11,
+                showRefresh: true,
+                clickToSelect: true,
+                search: true,
+                toolbar: '#toolbar',
+                onDblClickRow: function (row) {
+                    $("#title").text("编辑该纪录");
+                    $("#submit").attr('class', 'btn btn-warning');
+                    $("#submit").text("修改");
+                    $("#form").attr('action', host() + '/category/update');
+                    $("#form")[0].reset();
+                    $("#catId").val(row.catId);
+                    $("#catId").attr('readonly',true);
+                    $("#parentId").val(row.parentId);
+                    $("#catName").val(row.catName);
+                    $("#sort").val(row.sort);
+                    $("#description").val(row.description);
+                    $("#isOffline").val(row.isOffline);
+                    $("#createdTime").val(row.createdTime);
+                    $("#formBox").modal('show');
+                },
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'catId',
+                    title: 'ID'
+                }, {
+                    field: 'parentId',
+                    title: '父级id'
+                }, {
+                    field: 'catName',
+                    title: '分类名称'
+                }, {
+                    field: 'sort',
+                    title: '排序',
+                    sortable:true
+                }, {
+                    field: 'description',
+                    title: '描述'
+                }, {
+                    field: 'isOffline',
+                    title: '是否启用',
+                    formatter: function (value, row, index) {
+                        if (value == 1) {
+                            return "是";
+                        } else if (value == 0) {
+                            return "否";
+                        }
+                    }
+                }, {
+                    field: 'createdTime',
+                    title: '创建时间'
+                }]
             });
-            $('#tt').datagrid('reload');
+            $('#remove').click(function () {
+                var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
+                    return row.catId;
+                });
+                var json = JSON.stringify(ids);
+                $.ajax({
+                    type: 'post',
+                    url: host() + '/category/deleteCategory',
+                    contentType: 'application/json;charset=utf-8',
+                    data: json
+                });
+                $('#table').bootstrapTable('remove', {
+                    field: 'catId',
+                    values: ids
+                });
+            });
+            $("#add").click(function () {
+                $("#form")[0].reset();
+                $("#title").text("添加新纪录");
+                $("#catId").attr('readonly',true);
+                $("#submit").attr('class', 'btn btn-info');
+                $("#submit").text("添加");
+                $("#form").attr('action', host() + '/category/add');
+                $("#formBox").modal('show');
+            });
+            $("#submit").click(function () {
+                $("#form").submit();
+            });
+            $("#checkAll").click(function () {
+                $("#table").bootstrapTable('checkAll');
+            });
+            $("#uncheckAll").click(function () {
+                $("#table").bootstrapTable('uncheckAll');
+            });
         });
-
-        function level(value, row, index) {
-            if (value == 0) {
-                return "一级分类";
-            }
-            else if (value == 1) {
-                return "二级分类";
-            }
-            else if (value == 2) {
-                return "三级分类";
-            }
-        }
-        function offline(value, row, index) {
-            if (value == 1) {
-                return "启用";
-            }
-            else if (value == 0) {
-                return "禁用";
-            }
+        function host() {
+            return "http://" + window.location.host;
         }
     </script>
+    <style>
+        .container-fliud {
+            margin: 0px 15px;
+        }
+    </style>
 </head>
 <body>
-<h1>分类管理</h1>
-<div id="container" class="easyui-layout">
-    <div id="btnbox">
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
-           onclick="javascript:$('#tt').edatagrid('addRow')"> 添加</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
-           onclick="javascript:$('#tt').edatagrid('saveRow')"> 保存</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
-           onclick="javascript:$('#tt').edatagrid('cancelRow')"> 取消</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true"
-           onclick="javascript:$('#tt').edatagrid('destroyRow')"> 删除</a>
+<div class="container-fliud">
+    <div id="toolbar">
+        <button id="checkAll" class="btn btn-default">全选</button>
+        <button id="uncheckAll" class="btn btn-default">反选</button>
+        <button id="remove" class="btn btn-danger">批量删除</button>
+        <button id="add" class="btn btn-info">添加</button>
+    </div>
+    <table id="table"></table>
+
+    <div id="formBox" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="title"></h4>
+                </div>
+
+
+                <div class="modal-body">
+                    <form id="form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ID:</label>
+                            <div class="col-sm-2">
+                                <input name="catId" id="catId" type="text" class="form-control">
+                            </div>
+
+                            <label class="col-sm-3 control-label">父级id:</label>
+                            <div class="col-sm-2">
+                                <input name="parentId" id="parentId" type="text" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">分类名:</label>
+                            <div class="col-sm-2">
+                                <input name="catName" id="catName" type="text" class="form-control">
+                            </div>
+
+                            <label class="col-sm-2 control-label">排序:</label>
+                            <div class="col-sm-2">
+                                <input name="sort" id="sort" type="text" class="form-control">
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="form-group">
+
+
+                            <label class="col-sm-2 control-label">描述:</label>
+                            <div class="col-sm-10">
+                                <input name="description" id="description" type="text" class="form-control">
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">是否启用：</label>
+                            <div class="col-sm-1">
+                                <input name="isOffline" id="isOffline" checked type="radio" class="form-control"
+                                       value="1"><label col-sm-1>是</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <input name="isOffline" type="radio" class="form-control" value="0"><label
+                                    col-sm-1>否</label>
+                            </div>
+                            <label class="col-sm-2 control-label">创建时间:</label>
+                            <div class="col-sm-4">
+                                <input name="createdTime" id="createdTime" type="date" class="form-control">
+                            </div>
+
+                        </div>
+
+
+                    </form>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button id="submit" type="button">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <table id="tt"  style="width: 100%" singleSelect="true" >
-        <thead>
-        <tr>
-            <th field="catId" width="40" editor="text">ID</th>
-            <th field="parentId" width="40" formatter="level" editor="text">分类等级</th>
-            <th field="catName" width="50" editor="text">名字</th>
-            <th field="sort" width="40" editor="text" sortable="true">排序</th>
-            <th field="description" width="80" editor="text" >描述</th>
-            <th field="isOffline" width="40" formatter="offline" editor="text">是否启用</th>
-            <th field="createdTime" width="80">创建时间</th>
-            <th field="updatedTime">更新时间</th>
-        </tr>
-        </thead>
-    </table>
 </div>
 </body>
 </html>
