@@ -120,6 +120,33 @@ public class Goodsinfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Goodsinfo(){}
+
+    public Goodsinfo(Integer goodsId, String goodsName, String goodsSubtitle, Integer gcId, String gcName, String goodsImage, Integer goodsClick, Integer goodsState, Integer goodsCommend, String goodsDescription, String goodsCloseReason, Integer commentNum, Long thumbsUpNum, Integer salenumNum, Integer goodsCollectNum, Integer isDel, String memberId, Integer stock, Long updateTime, Date createTime, Double goodsOldprice, Double goodPrice) {
+        this.goodsId = goodsId;
+        this.goodsName = goodsName;
+        this.goodsSubtitle = goodsSubtitle;
+        this.gcId = gcId;
+        this.gcName = gcName;
+        this.goodsImage = goodsImage;
+        this.goodsClick = goodsClick;
+        this.goodsState = goodsState;
+        this.goodsCommend = goodsCommend;
+        this.goodsDescription = goodsDescription;
+        this.goodsCloseReason = goodsCloseReason;
+        this.commentNum = commentNum;
+        this.thumbsUpNum = thumbsUpNum;
+        this.salenumNum = salenumNum;
+        this.goodsCollectNum = goodsCollectNum;
+        this.isDel = isDel;
+        this.memberId = memberId;
+        this.stock = stock;
+        this.updateTime = updateTime;
+        this.createTime = createTime;
+        this.goodsOldprice = goodsOldprice;
+        this.goodPrice = goodPrice;
+    }
+
     public Integer getGoodsId() {
         return goodsId;
     }

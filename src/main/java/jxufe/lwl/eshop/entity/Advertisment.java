@@ -7,7 +7,7 @@ import java.util.Date;
  * advertisement
  * @author 
  */
-public class Advertisement implements Serializable {
+public class Advertisment implements Serializable {
     /**
      * 主键
      */
@@ -49,6 +49,7 @@ public class Advertisement implements Serializable {
     private Date advUpdatetime;
 
     private static final long serialVersionUID = 1L;
+
 
     public Integer getAdvId() {
         return advId;
@@ -125,7 +126,7 @@ public class Advertisement implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Advertisement other = (Advertisement) that;
+        Advertisment other = (Advertisment) that;
         return (this.getAdvId() == null ? other.getAdvId() == null : this.getAdvId().equals(other.getAdvId()))
             && (this.getAdvTitle() == null ? other.getAdvTitle() == null : this.getAdvTitle().equals(other.getAdvTitle()))
             && (this.getAdvPicUrl() == null ? other.getAdvPicUrl() == null : this.getAdvPicUrl().equals(other.getAdvPicUrl()))
@@ -169,4 +170,18 @@ public class Advertisement implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+    public Advertisment(){
+
+    }
+    public Advertisment(Integer advId, String advTitle, String advPicUrl, Short advOffline, Integer advOrder, String advLinkUrl, Date adv_cratetime, Date adv_updatetime) {
+        this.advId = advId;
+        this.advTitle = advTitle;
+        this.advPicUrl = advPicUrl;
+        this.advOffline = advOffline;
+        this.advOrder = advOrder;
+        this.advLinkUrl = advLinkUrl;
+        this.advCratetime = adv_cratetime;
+        this.advUpdatetime = adv_updatetime;
+    }
+
 }
