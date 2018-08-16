@@ -14,9 +14,9 @@
 	<script>
         $(document).ready(function () {
             $('#table').bootstrapTable({
-                url: '/comment/list',
+                url: '/advertisement/list',
                 striped:true,
-				height:580,
+                height:580,
                 pagination:true,
                 paginationLoop:false,
                 pageSize:11,
@@ -28,59 +28,62 @@
                     $("#title").text("编辑该纪录");
                     $("#submit").attr('class','btn btn-warning');
                     $("#submit").text("修改");
-                    $("#form").attr('action',host()+'/comment/update');
+                    $("#form").attr('action',host()+'/advertisement/update');
                     $("#form")[0].reset();
-                    $("#scommId").val(row.scommId);
-                    $("#scommId").attr("readonly",true);
-                    $("#goodisId").val(row.goodisId);
-                    $("#scommMemberid").val(row.scommMemberid);
-                    $("#scommContent").val(row.scommContent);
-                    $("#scommTime").val(row.scommTime);
+                    $("#advId").val(row.advId);
+                    $("#advId").attr("readonly",true);
+                    $("#advTitle").val(row.advTitle);
+                    $("#advPicUrl").val(row.advPicUrl);
+                    $("#advOffline").val(row.advOffline);
+                    $("#advLinkUrl").val(row.advLinkUrl);
+                    $("#advCratetime").val(row.advCratetime);
                     $("#formBox").modal('show');
                 },
                 columns: [{
                     checkbox: true
                 }, {
-                    field: 'scommId',
+                    field: 'advId',
                     title: 'ID'
                 }, {
-                    field: 'goodisId',
-                    title: '商品ID'
-
+                    field: 'advTitle',
+                    title: '标题'
                 }, {
-                    field: 'scommMemberid',
-                    title: '会员ID'
+                    field: 'advPicUrl',
+                    title: '图片'
                 }, {
-                    field: 'scommContent',
-                    title: '评论内容'
+                    field: 'advOffline',
+                    title: '是否下线'
                 }, {
-                    field: 'scommTime',
-                    title: '评论时间'
+                    field: 'advLinkUrl',
+                    title: '跳转地址'
+                }, {
+                    field: 'advCratetime',
+                    title: '创建时间'
                 }]
             });
             $('#remove').click(function () {
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
-                    return row.scommId;
+                    return row.advId;
                 });
                 var json=JSON.stringify(ids);
                 $.ajax({
                     type:'post',
-                    url:host()+'/comment/remove',
+                    url:host()+'/advertisement/remove',
                     contentType : 'application/json;charset=utf-8',
                     data : json
                 });
                 $('#table').bootstrapTable('remove', {
-                    field: 'scommId',
+                    field: 'advId',
                     values: ids
                 });
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
-                $("#goodsId").attr("readonly",false);
+                $("#advId").attr("readonly",false);
                 $("#title").text("添加新纪录");
                 $("#submit").attr('class','btn btn-info');
                 $("#submit").text("添加");
-                $("#form").attr('action',host()+'/comment/add');
+                $("#form").attr('action',host()+'/advertisement/add');
 
                 $("#formBox").modal('show');
             });
@@ -126,32 +129,34 @@
 						<div class="form-group">
 							<label class="col-sm-1 control-label" >ID:</label>
 							<div class="col-sm-2">
-								<input name="scommId" id="scommId" type="number" class="form-control">
+								<input name="advId" id="advId" type="number" class="form-control">
 							</div>
 
-							<label class="col-sm-2 control-label">商品ID:</label>
+							<label class="col-sm-2 control-label">标题:</label>
 							<div class="col-sm-2">
-								<input name="goodisId" id="goodisId" type="number" class="form-control">
+								<input name="advTitle" id="advTitle" type="text" class="form-control">
 							</div>
 
-							<label class="col-sm-2 control-label">会员ID:</label>
+							<label class="col-sm-2 control-label">是否下线:</label>
 							<div class="col-sm-2">
-								<input name="scommMemberid" id="scommMemberid" type="number" class="form-control">
+								<input name="advOffline" id="advOffline" type="number" class="form-control">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label ">评论时间:</label>
+							<label class="col-sm-2 control-label ">跳转地址:</label>
 							<div class="col-sm-10">
-								<input name="scommTime" id="scommTime" type="date" class="form-control">
+								<input name="advLinkUrl" id="advLinkUrl" type="text" class="form-control">
 							</div>
 						</div>
+
 						<div class="form-group">
-							<label class="col-sm-2 control-label">评论内容:</label>
+							<label class="col-sm-2 control-label ">创建时间:</label>
 							<div class="col-sm-10">
-								<textarea name="scommContent" id="scommContent" type="text" class="form-control"></textarea>
+								<input name="advCratetime" id="advCratetime" type="date" class="form-control">
 							</div>
 						</div>
+
 					</form>
 				</div>
 				<div class="modal-footer">

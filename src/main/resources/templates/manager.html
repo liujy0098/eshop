@@ -53,13 +53,13 @@
 
     <div id="bar" class="col-md-12"></div>
     <div id="nav" class="col-md-2">
-        <button id="b1" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
+        <button id="memberManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
         <button id="articleManager" class="btn btn-primary col-md-12"><i class="fa fa-file-text"></i> 文章管理</button>
         <button id="commentManager" class="btn btn-primary col-md-12"><i class="fa fa-comment"></i> 评论管理</button>
         <button id="orderManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
-        <button id="b5" class="btn btn-primary col-md-12"><i class="fa fa-picture-o"></i> 广告管理</button>
-        <button id="b6" class="btn btn-primary col-md-12"><i class="fa fa-shopping-bag"></i> 商品管理</button>
-        <button id="b7" class="btn btn-primary col-md-12"><i class="fa fa-filter"></i> 类别管理</button>
+        <button id="advertisementManager" class="btn btn-primary col-md-12"><i class="fa fa-picture-o"></i> 广告管理</button>
+        <button id="goodsManager" class="btn btn-primary col-md-12"><i class="fa fa-shopping-bag"></i> 商品管理</button>
+        <button id="categoryManager" class="btn btn-primary col-md-12"><i class="fa fa-filter"></i> 类别管理</button>
         <button id="b8" class="btn btn-primary col-md-12"><i class="fa fa-cog"></i> 系统设置</button>
     </div>
     <iframe id="workspace"  class="col-md-10" src="/articleManager"></iframe>
@@ -71,9 +71,13 @@
 
     $("button").click(function () {$("button").attr('class','btn btn-primary col-md-12');})
 
+    set("memberManager");
     set("articleManager");
     set("commentManager");
-    set("orderManager")
+    set("orderManager");
+    set("advertisementManager");
+    set("goodsManager");
+    set("categoryManager");
 
     function set(module) {
         $("#"+module).click(function (){

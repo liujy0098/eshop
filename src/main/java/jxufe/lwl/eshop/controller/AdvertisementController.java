@@ -1,9 +1,10 @@
 package jxufe.lwl.eshop.controller;
 
-import jxufe.lwl.eshop.dao.GoodsCommentDAO;
-import jxufe.lwl.eshop.entity.GoodsComment;
+import jxufe.lwl.eshop.dao.AdvertisementDAO;
+import jxufe.lwl.eshop.entity.Advertisment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,33 +12,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@RestController
-@RequestMapping("comment")
-public class CommentController {
+@Controller
+@RequestMapping("advertisement")
+public class AdvertisementController {
     @Autowired
-    private GoodsCommentDAO commentDAO;
+    private AdvertisementDAO advertisementDAO;
 
     @RequestMapping("list")
-    public List<GoodsComment> list(){
-        return commentDAO.findAll();
+    @ResponseBody
+    public List<Advertisment> list(){
+        return advertisementDAO.findAll();
     }
 
     @RequestMapping("add")
-    public String add(GoodsComment goodsComment){
-        commentDAO.insertSelective(goodsComment);
-        return "commentManager";
+    public String add(Advertisment advertisment){
+        advertisementDAO.insertSelective(advertisment);
+        return "advertisementManager";
     }
 
     @RequestMapping("remove")
     public void remove(@RequestBody int[] ids) {
         for(int id:ids)
-        commentDAO.deleteByPrimaryKey(id);
+        advertisementDAO.deleteByPrimaryKey(id);
     }
 
     @RequestMapping("update")
-    public String update(GoodsComment goodsComment){
-        commentDAO.updateByPrimaryKeySelective(goodsComment);
-        return "commentManager";
+    public String update(Advertisment advertisment){
+        advertisementDAO.updateByPrimaryKeySelective(advertisment);
+        return "advertisementManager";
     }
     @InitBinder
     public void initBinder(ServletRequestDataBinder binder) {

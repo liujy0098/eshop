@@ -15,17 +15,20 @@
     adv_id, adv_title, adv_pic_url, adv_offline, adv_order, adv_link_url, adv_cratetime, 
     adv_updatetime
   </sql>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    *
+    from advertisement
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from advertisement
     where adv_id = #{advId,jdbcType=INTEGER}
   </select>
-  <select id="findAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from advertisement
-  </select>
+
   <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

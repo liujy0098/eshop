@@ -29,10 +29,10 @@
                     $("#dataForm")[0].reset();
                     $("#fileForm")[0].reset();
 
-                    $("#fileForm").attr('action',host()+"/upload");
+                    $("#fileForm").attr('action',host()+"/uploadfile");
                     $("#dataForm").attr('action',host()+"/article/update");
                     $("#picArticleId").val(row.articleId);
-                    $("#img").attr('src',host()+"/pic/"+value);
+                    $("#img").attr('src',value);
                     $("#picBox").modal('show');
                 }
 
@@ -64,7 +64,7 @@
                 field: 'articlePicUrl',
                 title: '图片',
                 formatter:function (value,row) {
-                    return "<img src='" + host() + "/pic/" +value+"' height='20px'></img>"
+                    return "<img src='"+value+"' height='20px'></img>"
                 }
             }, {
                 field: 'articleContent',
@@ -124,7 +124,7 @@
         $("#fileForm").ajaxSubmit({
             success:function (data) {
                 $("#picArticlePicUrl").val(data);
-                $("#img").attr('src',host()+"/pic/"+data);
+                $("#img").attr('src',data);
             },
         });
 
@@ -207,7 +207,7 @@
                 <div class="modal-body">
                     <img id="img" class="img-thumbnail">
                     <form id="fileForm" enctype="multipart/form-data"  method="post" style="display: none">
-                        <input name="pic" id="fileInput" type="file" onchange="upload()">
+                        <input name="fs" id="fileInput" type="file" onchange="upload()">
                     </form>
                     <form id="dataForm" style="display: none">
                         <input name="articleId" id="picArticleId" type="txet">

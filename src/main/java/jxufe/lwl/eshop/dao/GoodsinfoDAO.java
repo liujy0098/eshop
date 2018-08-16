@@ -9,8 +9,4 @@ import java.util.List;
  */
 public interface GoodsinfoDAO extends MyBatisBaseDao<Goodsinfo, Integer> {
     List<Goodsinfo> findAll();
-
-    int insertSelective(Goodsinfo goods);
-
-    int deleteByPrimaryKey(int id);
 }

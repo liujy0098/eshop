@@ -16,8 +16,12 @@ public class PageController {
     public String toLogin(){
         return "login";
     }
+    @RequestMapping("welcome")
+    public String toWelcome(){
+        return "welcome";
+    }
     @RequestMapping("manager")
-    public String toManager(){
+    public String toMain(){
         return "manager";
     }
 }
