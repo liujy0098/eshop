@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>jQuery EasyUI</title>
+	<link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css">
+	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<script type="text/javascript" src="easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="jquery.edatagrid.js"></script>
+	<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+        $(function(){
+            $('#goods').edatagrid({
+                idField:'goodsId',
+				url: '/Goods/goods_List',
+				pagination:true,
+				saveUrl:'/Goods/sava_Goods',
+				updateUrl:'/Goods/sava_Goods',
+				destroyUrl: '/Goods/del_goods'
+            });
+        });
+	</script>
+	<style type="text/css">
+		a{
+			width: 50px;
+			height: 30px;
+		}
+		#btnbox{
+			height: 40px;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+<div id="container" class="easyui-layout">
+	<div id="btnbox">
+		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#goods').edatagrid('addRow')"><i class="fa fa-plus"></i> 添加</a>
+		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#goods').edatagrid('saveRow')"><i class="fa fa-hdd-o"></i> 保存</a>
+		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#goods').edatagrid('cancelRow')"><i class="fa fa-times"></i> 取消</a>
+		<a href="#" class="easyui-linkbutton" onclick="javascript:$('#goods').edatagrid('destroyRow')"><i class="fa fa-trash"></i> 删除</a>
+	</div>
+
+	<table id="goods" singleSelect="true">
+		<thead>
+		<tr>
+			<th field="goodsId" width="50" editor="{type:'numberbox',options:{required:true}}">商品id</th>
+			<th field="goodsName" width="100" editor="text">商品名</th>
+			<th field="goodsSubtitle" width="200" editor="text">商品副标题</th>
+			<th field="gcId" width="50" editor="{type:'numberbox',options:{required:true}}">分类id</th>
+			<th field="gcName" width="50" editor="text">分类</th>
+			<th field="goodsImage" width="100" editor="text">商品图片</th>
+			<th field="goodsClick" width="50" editor="numberbox">浏览数</th>
+			<th field="goodsState" width="50" editor="{type:'validatebox',options:{required:true}}">商品状态</th>
+			<th field="goodsCommend" width="50" editor="numberbox">推荐</th>
+			<th field="goodsDescription" width="200" editor="text">描述</th>
+			<th field="goodsCloseReason" width="200" editor="text">下架原因</th>
+			<th field="commentNum" width="50" editor="numberbox">评论次数</th>
+			<th field="thumbsUpNum" width="50" editor="numberbox">商品点赞量</th>
+			<th field="salenumNum" width="50" editor="numberbox">售出数量</th>
+			<th field="goodsCollectNum" width="50" editor="numberbox">收藏数量</th>
+			<th field="isDel" width="100" editor="{type:'validatebox',options:{required:true}}">是否删除</th>
+			<th field="memberId" width="50" editor="text">上传者</th>
+			<th field="stock" width="50" editor="numberbox">库存</th>
+			<th field="updateTime" class="datebox"  width="200" editor="numberbox">修改时间</th>
+			<th field="createTime" class="datebox"  width="200" editor="text">上传时间</th>
+			<th field="goodsOldprice" width="50" editor="numberbox">原价</th>
+			<th field="goodPrice" width="50" editor="numberbox">售价</th>
+		</tr>
+		</thead>
+	</table>
+</div>
+
+</body>
+</html>

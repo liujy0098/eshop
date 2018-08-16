@@ -31,6 +31,7 @@
                     $("#form").attr('action',host()+'/order/update');
                     $("#form")[0].reset();
                     $("#orderId").val(row.orderId);
+                    $("#orderId").attr("readonly",true);
                     $("#orderSn").val(row.orderSn);
                     $("#buyerId").val(row.buyerId);
                     $("#addTime").val(row.addTime);
@@ -87,6 +88,7 @@
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
+                $("#orderId").attr("readonly",false);
                 $("#title").text("添加新纪录");
                 $("#submit").attr('class','btn btn-info');
                 $("#submit").text("添加");

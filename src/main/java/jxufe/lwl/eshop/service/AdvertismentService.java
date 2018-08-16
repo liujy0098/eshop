@@ -1,15 +1,18 @@
-package jxufe.lwl.eshop.dao;
+package jxufe.lwl.eshop.service;
 
 import jxufe.lwl.eshop.entity.Advertisment;
 
 import java.util.List;
 
 /**
- * AdvertisementDAO继承基类
+ * Created by Administrator on 2018/8/9.
  */
-public interface AdvertisementDAO extends MyBatisBaseDao<Advertisment, Integer> {
+public interface AdvertismentService {
     Advertisment findById(int id);
+
     List<Advertisment> findAll();
+
     int savaAdById(Advertisment ad);
-    int deleteByPrimaryKey(Integer id);
+
+    int deleteByPrimaryKey(Integer advId);
 }
