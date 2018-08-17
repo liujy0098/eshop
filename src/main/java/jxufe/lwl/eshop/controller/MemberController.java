@@ -89,14 +89,14 @@ public class MemberController {
     }
 
     @RequestMapping("add")
-    @ResponseBody
     public Object addMember(Memberinfo memberinfo){
-        return memberinfoService.saveMember(memberinfo);
+         memberinfoService.saveMember(memberinfo);
+        return "memberManager";
     }
     @RequestMapping("update")
-    @ResponseBody
     public Object updateMember(Memberinfo memberinfo){
-        return memberinfoService.updateMember(memberinfo);
+         memberinfoService.updateMember(memberinfo);
+        return "memberManager";
     }
 
     @InitBinder

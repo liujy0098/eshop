@@ -31,6 +31,7 @@
                     $("#form").attr('action', host() + '/memberinfo/update');
                     $("#form")[0].reset();
                     $("#memberId").val(row.memberId);
+                    $("#catId").attr('readonly',true);
                     $("#memberMobile").val(row.memberMobile);
                     $("#memberName").val(row.memberName);
                     $("#memberPasswd").val(row.memberPasswd);

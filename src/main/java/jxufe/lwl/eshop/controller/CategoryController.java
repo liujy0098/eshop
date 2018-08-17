@@ -94,13 +94,13 @@ public class CategoryController {
     @RequestMapping("update")
     public Object updateCategory(GoodsCategory goodsCategory){
         categoryService.updateCategory(goodsCategory);
-        return "category2Manager";
+        return "categoryManager";
     }
 
     @RequestMapping("add")
     public Object addCategory(GoodsCategory goodsCategory){
         categoryService.saveCategory(goodsCategory);
-        return "category2Manager";
+        return "categoryManager";
     }
 
 
