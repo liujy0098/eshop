@@ -49,13 +49,19 @@
                     title: '标题'
                 }, {
                     field: 'advPicUrl',
-                    title: '图片'
+                    title: '图片',
+                    formatter:function (value,row) {
+                        return "<img src='"+value+"' height='20px'></img>"
+                    }
                 }, {
                     field: 'advOffline',
                     title: '是否下线'
                 }, {
                     field: 'advLinkUrl',
-                    title: '跳转地址'
+                    title: '跳转地址',
+                    formatter:function (value,row) {
+                        return "<a href='"+value+"'>点击跳转</a>"
+                    }
                 }, {
                     field: 'advCratetime',
                     title: '创建时间'

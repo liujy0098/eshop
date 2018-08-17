@@ -63,8 +63,10 @@
                     title: '分类ID'
                 }, {
                     field: 'goodsImage',
+					width: 50,
                     title: '图片',
-					width: 50
+                    formatter:function (value,row) {
+                        return "<img src='"+value+"' height='20px'></img>"}
                 }, {
                     field: 'goodsClick',
                     title: '浏览数'
