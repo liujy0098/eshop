@@ -33,7 +33,6 @@ public class AdminController {
         String password=admin.getAdminPassword();
         password=DigestUtils.md5Hex(password);
         admin.setAdminPassword(password);
-        System.out.println(password);
         admin.setCreatedTime(new Date());
         adminDAO.insertSelective(admin);
         return "YES";
@@ -64,6 +63,7 @@ public class AdminController {
             return "NO";
         else {
             admin.setAdminLoginTime(new Date());
+            admin.setAdminLoginNum(admin.getAdminLoginNum()+1);
             adminDAO.updateByPrimaryKeySelective(admin);
             session.setAttribute("adminName",admin.getAdminName());
             return "YES";
