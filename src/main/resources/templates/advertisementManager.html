@@ -73,7 +73,14 @@
                     }
                 }, {
                     field: 'advOffline',
-                    title: '是否下线'
+                    title: '是否下线',
+                    formatter: function (value, row, index) {
+                        if (value == 1) {
+                            return "否";
+                        } else if (value == 0) {
+                            return "是";
+                        }
+                    }
                 }, {
                     field: 'advLinkUrl',
                     title: '跳转地址',
@@ -193,11 +200,14 @@
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">是否下线:</label>
-							<div class="col-sm-2">
-								<input name="advOffline" id="advOffline" type="number" class="form-control">
+							<div class="col-sm-3">
+								<select name="advOffline" id="advOffline" type="number" class="form-control">
+									<option value="0">下线</option>
+									<option value="1">上线</option>
+								</select>
 							</div>
 							<label class="col-sm-2 control-label ">跳转地址:</label>
-							<div class="col-sm-6">
+							<div class="col-sm-5">
 								<input name="advLinkUrl" id="advLinkUrl" type="text" class="form-control">
 							</div>
 						</div>
