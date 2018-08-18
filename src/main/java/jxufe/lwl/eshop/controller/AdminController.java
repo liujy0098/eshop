@@ -3,6 +3,7 @@ package jxufe.lwl.eshop.controller;
 import jxufe.lwl.eshop.dao.AdminDAO;
 import jxufe.lwl.eshop.entity.Admin;
 import jxufe.lwl.eshop.entity.Admin;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -27,9 +28,15 @@ public class AdminController {
     }
 
     @RequestMapping("add")
+    @ResponseBody
     public String add(Admin admin){
+        String password=admin.getAdminPassword();
+        password=DigestUtils.md5Hex(password);
+        admin.setAdminPassword(password);
+        System.out.println(password);
+        admin.setCreatedTime(new Date());
         adminDAO.insertSelective(admin);
-        return "adminManager";
+        return "YES";
     }
 
     @RequestMapping("remove")
@@ -56,11 +63,29 @@ public class AdminController {
     @RequestMapping("login")
     @ResponseBody
     public String login(String adminName, String adminPassword, HttpSession session){
+        adminPassword=DigestUtils.md5Hex(adminPassword);
         Admin admin=adminDAO.login(adminName,adminPassword);
         if(admin==null)
             return "NO";
         else {
             session.setAttribute("adminName",admin.getAdminName());
+            return "YES";
+        }
+    }
+
+    @RequestMapping("pwd")
+    @ResponseBody
+    public String pwd(String oldAdminPassword,String adminPassword, HttpSession session){
+        String adminName=(String)session.getAttribute("adminName");
+        oldAdminPassword=DigestUtils.md5Hex(oldAdminPassword);
+        adminPassword=DigestUtils.md5Hex(adminPassword);
+
+        Admin admin=adminDAO.login(adminName,oldAdminPassword);
+        if(admin==null)
+            return "NO";
+        else {
+            admin.setAdminPassword(adminPassword);
+            adminDAO.updateByPrimaryKeySelective(admin);
             return "YES";
         }
     }
