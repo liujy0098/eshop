@@ -45,11 +45,6 @@ public class AdminController {
             adminDAO.deleteByPrimaryKey(id);
     }
 
-    @RequestMapping("update")
-    public String update(Admin admin){
-        adminDAO.updateByPrimaryKeySelective(admin);
-        return "adminManager";
-    }
     @InitBinder
     public void initBinder(ServletRequestDataBinder binder) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

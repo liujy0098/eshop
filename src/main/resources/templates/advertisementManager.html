@@ -10,6 +10,7 @@
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 
 	<script>
         $(document).ready(function () {
@@ -24,6 +25,19 @@
                 clickToSelect:true,
                 search:true,
                 toolbar:'#toolbar',
+				onClickCell:function (field, value, row) {
+                    if(field=="advPicUrl"){
+                        $("#dataForm")[0].reset();
+                        $("#fileForm")[0].reset();
+
+                        $("#fileForm").attr('action',host()+"/uploadfile");
+                        $("#dataForm").attr('action',host()+"/advertisement/update");
+                        $("#picAdvId").val(row.advId);
+                        $("#img").attr('src',value);
+                        $("#picBox").modal('show');
+                    }
+
+                },
                 onDblClickRow:function(row){
                     $("#title").text("编辑该纪录");
                     $("#submit").attr('class','btn btn-warning');
@@ -31,7 +45,6 @@
                     $("#form").attr('action',host()+'/advertisement/update');
                     $("#form")[0].reset();
                     $("#advId").val(row.advId);
-                    $("#advId").attr("readonly",true);
                     $("#advTitle").val(row.advTitle);
                     $("#advPicUrl").val(row.advPicUrl);
                     $("#advOffline").val(row.advOffline);
@@ -67,7 +80,8 @@
                     title: '创建时间'
                 }]
             });
-            $('#remove').click(function () {
+            $('#remove').click(function () {if (confirm('确认删除吗')==true){
+
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
                     return row.advId;
                 });
@@ -82,10 +96,12 @@
                     field: 'advId',
                     values: ids
                 });
+
+            }
+
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
-                $("#advId").attr("readonly",false);
                 $("#title").text("添加新纪录");
                 $("#submit").attr('class','btn btn-info');
                 $("#submit").text("添加");
@@ -102,7 +118,28 @@
             $("#uncheckAll").click(function () {
                 $("#table").bootstrapTable('uncheckAll');
             });
+            $("#choosePic").click(function () {
+                $("#fileInput").click();
+            });
+            $("#setPic").click(function () {
+                $("#fileForm").attr('action',host()+"/uploadfile");
+                $("#fileInput").click();
+            });
+            $("#picSubmit").click(function () {
+                $("#dataForm").submit();
+            })
         });
+        function upload(){
+            $("#fileForm").ajaxSubmit({
+                success:function (data) {
+                    $("#picAdvPicUrl").val(data);
+                    $("#advPicUrl").val(data);
+                    $("#img").attr('src',data);
+                    $("#picChoosen").attr('src',data);
+                },
+            });
+
+        }
         function host() {
             return "http://"+window.location.host;
         }
@@ -135,7 +172,7 @@
 						<div class="form-group">
 							<label class="col-sm-1 control-label" >ID:</label>
 							<div class="col-sm-2">
-								<input name="advId" id="advId" type="number" class="form-control">
+								<input name="advId" id="advId" type="text" class="form-control" readonly="readonly">
 							</div>
 
 							<label class="col-sm-2 control-label">标题:</label>
@@ -162,11 +199,38 @@
 								<input name="advCratetime" id="advCratetime" type="date" class="form-control">
 							</div>
 						</div>
-
+						<input name="advPicUrl" id="advPicUrl" type="txet" style="display: none">
 					</form>
 				</div>
 				<div class="modal-footer">
+					<button id="setPic" class="btn btn-info pull-left">设置图片 <img id="picChoosen" height="20px" /></button>
 					<button id="submit" type="button">提交</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="picBox" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<img id="img" class="img-thumbnail">
+					<form id="fileForm" enctype="multipart/form-data"  method="post" style="display: none">
+						<input name="fs" id="fileInput" type="file" onchange="upload()">
+					</form>
+					<form id="dataForm" style="display: none">
+						<input name="advId" id="picAdvId" type="txet">
+						<input name="advPicUrl" id="picAdvPicUrl" type="text">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button id="choosePic" class="btn btn-info pull-left">修改图片</button>
+					<button id="picSubmit" class="btn btn-warning" type="button">提交</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>

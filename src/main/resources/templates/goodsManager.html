@@ -44,7 +44,6 @@
                     $("#form").attr('action', host() + '/goods/update');
                     $("#form")[0].reset();
                     $("#goodsId").val(row.goodsId);
-                    $("#goodsId").attr("readonly", true);
                     $("#goodsName").val(row.goodsName);
                     $("#gcId").val(row.gcId);
                     $("#goodsImage").val(row.goodsImage);
@@ -120,7 +119,7 @@
                     title: '上传者'
                 }]
             });
-            $('#remove').click(function () {
+            $('#remove').click(function () {if (confirm('确认删除吗')==true) {
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
                     return row.goodsId;
                 });
@@ -135,10 +134,10 @@
                     field: 'goodsId',
                     values: ids
                 });
+            }
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
-                $("#scommId").attr("readonly", false);
                 $("#title").text("添加新纪录");
                 $("#submit").attr('class', 'btn btn-info');
                 $("#submit").text("添加");
@@ -209,7 +208,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">ID:</label>
                             <div class="col-sm-2">
-                                <input name="goodsId" id="goodsId" type="number" class="form-control">
+                                <input name="goodsId" id="goodsId" type="number" class="form-control" readonly="readonly">
                             </div>
 
                             <label class="col-sm-2 control-label">商品名:</label>

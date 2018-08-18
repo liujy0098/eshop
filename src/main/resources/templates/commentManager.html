@@ -61,21 +61,22 @@
                     width: 150
                 }]
             });
-            $('#remove').click(function () {
+            $('#remove').click(function () {if (confirm('确认删除吗')==true) {
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
                     return row.scommId;
                 });
-                var json=JSON.stringify(ids);
+                var json = JSON.stringify(ids);
                 $.ajax({
-                    type:'post',
-                    url:host()+'/comment/remove',
-                    contentType : 'application/json;charset=utf-8',
-                    data : json
+                    type: 'post',
+                    url: host() + '/comment/remove',
+                    contentType: 'application/json;charset=utf-8',
+                    data: json
                 });
                 $('#table').bootstrapTable('remove', {
                     field: 'scommId',
                     values: ids
                 });
+            }
             });
             $("#add").click(function () {
                 $("#form")[0].reset();

@@ -1,5 +1,7 @@
 package jxufe.lwl.eshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -106,6 +108,7 @@ public class Goodsinfo implements Serializable {
     /**
      * 商品上传时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createTime;
 
     /**

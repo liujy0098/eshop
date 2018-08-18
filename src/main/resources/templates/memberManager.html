@@ -95,7 +95,7 @@
                     }
                 }]
             });
-            $('#remove').click(function () {
+            $('#remove').click(function () {if (confirm('确认删除吗')==true) {
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
                     return row.memberId;
                 });
@@ -110,6 +110,7 @@
                     field: 'memberId',
                     values: ids
                 });
+            }
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
