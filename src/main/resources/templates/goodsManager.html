@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<meta charset="UTF-8">
-	<title>Title</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
-	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 
-	<script>
+    <script>
         $(document).ready(function () {
             $('#table').bootstrapTable({
                 url: '/goods/list',
-                striped:true,
-                height:580,
-                pagination:true,
-                paginationLoop:false,
-                pageSize:11,
-                showRefresh:true,
-                clickToSelect:true,
-                search:true,
-                toolbar:'#toolbar',
-                onDblClickRow:function(row){
+                striped: true,
+                height: 580,
+                pagination: true,
+                paginationLoop: false,
+                pageSize: 11,
+                showRefresh: true,
+                clickToSelect: true,
+                search: true,
+                toolbar: '#toolbar',
+                onClickCell: function (field, value, row) {
+                    if (field == "goodsImage") {
+                        $("#dataForm")[0].reset();
+                        $("#fileForm")[0].reset();
+
+                        $("#fileForm").attr('action', host() + "/uploadfile");
+                        $("#dataForm").attr('action', host() + "/goods/update");
+                        $("#picGoodsId").val(row.goodsId);
+                        $("#img").attr('src', value);
+                        $("#picBox").modal('show');
+                    }
+                },
+                onDblClickRow: function (row) {
                     $("#title").text("编辑该纪录");
-                    $("#submit").attr('class','btn btn-warning');
+                    $("#submit").attr('class', 'btn btn-warning');
                     $("#submit").text("修改");
-                    $("#form").attr('action',host()+'/goods/update');
+                    $("#form").attr('action', host() + '/goods/update');
                     $("#form")[0].reset();
                     $("#goodsId").val(row.goodsId);
-                    $("#goodsId").attr("readonly",true);
+                    $("#goodsId").attr("readonly", true);
                     $("#goodsName").val(row.goodsName);
                     $("#gcId").val(row.gcId);
                     $("#goodsImage").val(row.goodsImage);
@@ -63,16 +76,18 @@
                     title: '分类ID'
                 }, {
                     field: 'goodsImage',
-					width: 50,
+                    width: 50,
                     title: '图片',
-                    formatter:function (value,row) {
-                        return "<img src='"+value+"' height='20px'></img>"}
+                    formatter: function (value, row) {
+                        return "<img src='" + value + "' height='20px'>"
+                    }
                 }, {
                     field: 'goodsClick',
                     title: '浏览数'
                 }, {
                     field: 'goodsCommend',
-                    title: '推荐'
+                    title: '推荐',
+                    sortable: true
                 }, {
                     field: 'goodsDescription',
                     title: '描述'
@@ -109,12 +124,12 @@
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
                     return row.goodsId;
                 });
-                var json=JSON.stringify(ids);
+                var json = JSON.stringify(ids);
                 $.ajax({
-                    type:'post',
-                    url:host()+'/goods/remove',
-                    contentType : 'application/json;charset=utf-8',
-                    data : json
+                    type: 'post',
+                    url: host() + '/goods/remove',
+                    contentType: 'application/json;charset=utf-8',
+                    data: json
                 });
                 $('#table').bootstrapTable('remove', {
                     field: 'goodsId',
@@ -123,146 +138,197 @@
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
-                $("#scommId").attr("readonly",false);
+                $("#scommId").attr("readonly", false);
                 $("#title").text("添加新纪录");
-                $("#submit").attr('class','btn btn-info');
+                $("#submit").attr('class', 'btn btn-info');
                 $("#submit").text("添加");
-                $("#form").attr('action',host()+'/goods/add');
+                $("#form").attr('action', host() + '/goods/add');
 
                 $("#formBox").modal('show');
             });
             $("#submit").click(function () {
                 $("#form").submit();
             });
+            $("#setPic").click(function () {
+                $("#fileForm").attr('action', host() + "/uploadfile");
+                $("#fileInput").click();
+            });
+            $("#picSubmit").click(function () {
+                $("#dataForm").submit();
+            })
             $("#checkAll").click(function () {
                 $("#table").bootstrapTable('checkAll');
+            });
+            $("#choosePic").click(function () {
+                $("#fileInput").click();
             });
             $("#uncheckAll").click(function () {
                 $("#table").bootstrapTable('uncheckAll');
             });
         });
-        function host() {
-            return "http://"+window.location.host;
+        function upload() {
+            $("#fileForm").ajaxSubmit({
+                success: function (data) {
+                    $("#picGoodsImage").val(data);
+                    $("#goodsImage").val(data);
+                    $("#img").attr('src', data);
+                    $("#picChoosen").attr('src', data);
+                },
+            });
         }
-	</script>
-	<style>
-		.container-fliud{
-			margin: 0px 15px;
-		}
-	</style>
+        function host() {
+            return "http://" + window.location.host;
+        }
+    </script>
+    <style>
+        .container-fliud {
+            margin: 0px 15px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fliud">
-	<div id="toolbar">
-		<button id="checkAll" class="btn btn-default">全选</button>
-		<button id="uncheckAll" class="btn btn-default">反选</button>
-		<button id="remove" class="btn btn-danger">批量删除</button>
-		<button id="add" class="btn btn-info">添加</button>
-	</div>
-	<table id="table"></table>
+    <div id="toolbar">
+        <button id="checkAll" class="btn btn-default">全选</button>
+        <button id="uncheckAll" class="btn btn-default">反选</button>
+        <button id="remove" class="btn btn-danger">批量删除</button>
+        <button id="add" class="btn btn-info">添加</button>
+    </div>
+    <table id="table"></table>
 
-	<div id="formBox" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="title"></h4>
-				</div>
-				<div class="modal-body">
-					<form id="form" class="form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-2 control-label" >ID:</label>
-							<div class="col-sm-2">
-								<input name="goodsId" id="goodsId" type="number" class="form-control">
-							</div>
+    <div id="formBox" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ID:</label>
+                            <div class="col-sm-2">
+                                <input name="goodsId" id="goodsId" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">商品名:</label>
-							<div class="col-sm-4">
-								<input name="goodsName" id="goodsName" type="text" class="form-control">
-							</div>
-						</div>
+                            <label class="col-sm-2 control-label">商品名:</label>
+                            <div class="col-sm-4">
+                                <input name="goodsName" id="goodsName" type="text" class="form-control">
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label">描述:</label>
-							<div class="col-sm-10">
-								<input name="goodsDescription" id="goodsDescription" type="text" class="form-control"></input>
-							</div>
-						</div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">描述:</label>
+                            <div class="col-sm-10">
+                                <input name="goodsDescription" id="goodsDescription" type="text" class="form-control">
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label" >浏览数:</label>
-							<div class="col-sm-2">
-								<input name="goodsClick" id="goodsClick" type="number" class="form-control">
-							</div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">浏览数:</label>
+                            <div class="col-sm-2">
+                                <input name="goodsClick" id="goodsClick" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">推荐:</label>
-							<div class="col-sm-2">
-								<input name="goodsCommend" id="goodsCommend" type="number" class="form-control">
-							</div>
+                            <label class="col-sm-2 control-label">推荐:</label>
+                            <div class="col-sm-2">
+                                <input name="goodsCommend" id="goodsCommend" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">销量:</label>
-							<div class="col-sm-2">
-								<input name="salenumNum" id="salenumNum" type="number" class="form-control">
-							</div>
-						</div>
+                            <label class="col-sm-2 control-label">销量:</label>
+                            <div class="col-sm-2">
+                                <input name="salenumNum" id="salenumNum" type="number" class="form-control">
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label" >库存:</label>
-							<div class="col-sm-2">
-								<input name="stock" id="stock" type="number" class="form-control">
-							</div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">库存:</label>
+                            <div class="col-sm-2">
+                                <input name="stock" id="stock" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">收藏数量:</label>
-							<div class="col-sm-2">
-								<input name="goodsCollectNum" id="goodsCollectNum" type="number" class="form-control">
-							</div>
+                            <label class="col-sm-2 control-label">收藏数量:</label>
+                            <div class="col-sm-2">
+                                <input name="goodsCollectNum" id="goodsCollectNum" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">上传者:</label>
-							<div class="col-sm-2">
-								<input name="memberId" id="memberId" type="number" class="form-control">
-							</div>
-						</div>
+                            <label class="col-sm-2 control-label">上传者:</label>
+                            <div class="col-sm-2">
+                                <input name="memberId" id="memberId" type="number" class="form-control">
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label" >原价:</label>
-							<div class="col-sm-2">
-								<input name="goodsOldprice" id="goodsOldprice" type="number" class="form-control">
-							</div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">原价:</label>
+                            <div class="col-sm-2">
+                                <input name="goodsOldprice" id="goodsOldprice" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">原价:</label>
-							<div class="col-sm-2">
-								<input name="goodPrice" id="goodPrice" type="number" class="form-control">
-							</div>
+                            <label class="col-sm-2 control-label">售价:</label>
+                            <div class="col-sm-2">
+                                <input name="goodPrice" id="goodPrice" type="number" class="form-control">
+                            </div>
 
-							<label class="col-sm-2 control-label">分类ID:</label>
-							<div class="col-sm-2">
-								<input name="gcId" id="gcId" type="number" class="form-control">
-							</div>
-						</div>
+                            <label class="col-sm-2 control-label">分类ID:</label>
+                            <div class="col-sm-2">
+                                <input name="gcId" id="gcId" type="number" class="form-control">
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label ">上传时间:</label>
-							<div class="col-sm-10">
-								<input name="createTime" id="createTime" type="date" class="form-control">
-							</div>
-						</div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">上传时间:</label>
+                            <div class="col-sm-10">
+                                <input name="createTime" id="createTime" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <input name="goodsImage" id="goodsImage" type="text" style="display: none">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">下架原因:</label>
+                            <div class="col-sm-10">
+                                <textarea name="goodsCloseReason" id="goodsCloseReason" type="text"
+                                          class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="setPic" class="btn btn-info pull-left">设置图片 <img id="picChoosen" height="20px"/>
+                    </button>
+                    <button id="submit" type="button">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label">下架原因:</label>
-							<div class="col-sm-10">
-								<textarea name="goodsCloseReason" id="goodsCloseReason" type="text" class="form-control"></textarea>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button id="submit" type="button">提交</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
+    <div id="picBox" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <img id="img" class="img-thumbnail">
+                    <form id="fileForm" enctype="multipart/form-data" method="post" style="display: none">
+                        <input name="fs" id="fileInput" type="file" onchange="upload()">
+                    </form>
+                    <form id="dataForm" style="display: none">
+                        <input name="goodsId" id="picGoodsId" type="text">
+                        <input name="goodsImage" id="picGoodsImage" type="text">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="choosePic" class="btn btn-info pull-left">修改图片</button>
+                    <button id="picSubmit" class="btn btn-warning" type="button">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div> <!--box-->
 </div>
 </body>
 </html>
