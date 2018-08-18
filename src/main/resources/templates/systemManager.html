@@ -3,8 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <style>
+        .fun{
+            height: 100px;
+            font-size: 30px;
+        }
+        body{
+            background-color: lightgray;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('#table').bootstrapTable({
+                url: '/admin/list',
+                striped:true,
+                pagination:true,
+                paginationLoop:false,
+                pageSize:6,
+                columns: [{
+                    field: 'adminId',
+                    title: 'ID'
+                }, {
+                    field: 'adminName',
+                    title: '管理员名称'
+
+                }, {
+                    field: 'adminPassword',
+                    title: '登录密码'/*,
+                    formatter:function () {
+                        return "（已加密）"
+                    }*/
+                }, {
+                    field: 'adminLoginNum',
+                    title: '登录次数'
+                }, {
+                    field: 'adminIsSuper',
+                    title: '管理员级别',
+                    formatter:function (value) {
+                        if(value==0) return "普通";
+                        else if(value==1) return "超级管理员";
+                    }
+                }, {
+                    field: 'isDisable',
+                    title: '禁用账号',
+                    formatter:function (value) {
+                        if(value==0) return "正常使用";
+                        else if(value==1) return "已禁用";
+                    }
+                }, {
+                    field: 'adminLoginTime',
+                    title: '登录时间'
+                }, {
+                    field: 'createTime',
+                    title: '创建时间'
+                }]
+            });
+            $("#m1").click(function () {
+                $('#table').bootstrapTable("showAllColumns");
+                $('#table').bootstrapTable("hideColumn","adminLoginTime");
+                $("#adminBox").modal('show');
+            });
+            $("#m2").click(function () {
+                $("#passwordForm")[0].reset();
+                $("#passwordBox").modal('show');
+
+            });
+            $("#m3").click(function () {
+                $("#form")[0].reset();
+                $("#formBox").modal('show');
+                
+            });
+            $("#m4").click(function () {
+                $('#table').bootstrapTable("hideAllColumns");
+                $('#table').bootstrapTable("showColumn","adminName");
+                $('#table').bootstrapTable("showColumn","adminLoginTime");
+                $("#adminBox").modal('show');
+            });
+            $("#submit").click(function () {
+                var data=$("#form").serialize();
+                $.get(host()+"/admin/add",data,function (data) {
+                    if(data=="YES") {
+                        alert("添加成功！");
+                        $("#adminBox").modal('hide');
+                    }
+                });
+
+            });
+            $("#submitPassword").click(function () {
+                var data=$("#passwordForm").serialize();
+                $.get(host()+"/admin/pwd",data,function (data) {
+                    if(data=="YES") {
+                        alert("修改成功！");
+                        $("#passwordBox").modal('hide');
+                    }
+                    else alert("密码错误");
+                });
+
+            });
+        });
+        function host() {
+            return "http://"+window.location.host;
+        }
+    </script>
 </head>
 <body>
+<div class="container-fliud">
+    <div class="row" style="margin-top: 100px">
+        <button id="m1" class="fun btn btn-primary col-md-2 col-md-offset-2">查看管理名单</button>
+        <button id="m2" class="fun btn btn-primary col-md-2 col-md-offset-3">修改密码</button>
+    </div>
+    <div class="row" style="margin-top: 100px">
+        <button id="m3" class="fun btn btn-primary col-md-2 col-md-offset-2">新加管理员</button>
+        <button id="m4" class="fun btn btn-primary col-md-2 col-md-offset-3">登录日志</button>
+    </div>
 
+    <div id="adminBox" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">订单详细清单</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="table"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="formBox" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >ID:</label>
+                            <div class="col-sm-3">
+                                <input name="adminId" id="adminId" type="text" readonly="readonly" class="form-control">
+                            </div>
+                            <label class="col-sm-3 control-label">管理员级别:</label>
+                            <div class="col-sm-3">
+                                <select name="adminIsSuper" id="adminIsSuper" class="form-control">
+                                    <option value="0">普通管理员</option>
+                                    <option value="1">超级管理员</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称:</label>
+                            <div class="col-sm-3">
+                                <input name="adminName" id="adminName" type="text" class="form-control">
+                            </div>
+                            <label class="col-sm-3 control-label">管理员密码:</label>
+                            <div class="col-sm-4">
+                                <input name="adminPassword" id="adminPassword" type="password" class="form-control">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="submit" class="btn btn-default" type="button">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="passwordBox" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="passwordForm" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">当前密码:</label>
+                            <div class="col-sm-9">
+                                <input name="oldAdminPassword" id="oldAdminPassword" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">新密码:</label>
+                            <div class="col-sm-9">
+                                <input name="adminPassword" id="adminPassword" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="submitPassword" class="btn btn-default" type="button">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

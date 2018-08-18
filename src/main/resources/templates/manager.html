@@ -46,6 +46,9 @@
         .fa{
             display: inline-block;
         }
+        .menu{
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -55,14 +58,14 @@
         <div id="signout" class="btn btn-success pull-right col-md-1"><h4>登出</h4></div>
     </div>
     <div id="nav" class="col-md-2">
-        <button id="memberManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
-        <button id="articleManager" class="btn btn-primary col-md-12"><i class="fa fa-file-text"></i> 文章管理</button>
-        <button id="commentManager" class="btn btn-primary col-md-12"><i class="fa fa-comment"></i> 评论管理</button>
-        <button id="orderManager" class="btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
-        <button id="advertisementManager" class="btn btn-primary col-md-12"><i class="fa fa-picture-o"></i> 广告管理</button>
-        <button id="goodsManager" class="btn btn-primary col-md-12"><i class="fa fa-shopping-bag"></i> 商品管理</button>
-        <button id="categoryManager" class="btn btn-primary col-md-12"><i class="fa fa-filter"></i> 类别管理</button>
-        <button id="adminManager" class="btn btn-primary col-md-12"><i class="fa fa-cog"></i> 系统设置</button>
+        <button id="memberManager" class="menu btn btn-primary col-md-12"><i class="fa fa-user"></i> 会员管理</button>
+        <button id="articleManager" class="menu btn btn-primary col-md-12"><i class="fa fa-file-text"></i> 文章管理</button>
+        <button id="commentManager" class="menu btn btn-primary col-md-12"><i class="fa fa-comment"></i> 评论管理</button>
+        <button id="orderManager" class="menu btn btn-primary col-md-12"><i class="fa fa-user"></i> 订单管理</button>
+        <button id="advertisementManager" class="menu btn btn-primary col-md-12"><i class="fa fa-picture-o"></i> 广告管理</button>
+        <button id="goodsManager" class="menu btn btn-primary col-md-12"><i class="fa fa-shopping-bag"></i> 商品管理</button>
+        <button id="categoryManager" class="menu btn btn-primary col-md-12"><i class="fa fa-filter"></i> 类别管理</button>
+        <button id="systemManager" class="menu btn btn-primary col-md-12"><i class="fa fa-cog"></i> 系统设置</button>
     </div>
     <iframe id="workspace"  class="col-md-10" src="/welcome"></iframe>
     <div id="copyright" class="col-md-12">
@@ -71,7 +74,7 @@
 </div>
 <script>
 
-    $("button").click(function () {$("button").attr('class','btn btn-primary col-md-12');});
+    $("button").click(function () {$("button").attr('class','menu btn btn-primary col-md-12');});
 
     $("#signout").click(function () {
         $.get(host()+"/admin/signout",function (data) {
@@ -90,11 +93,11 @@
     set("advertisementManager");
     set("goodsManager");
     set("categoryManager");
-    set("adminManager");
+    set("systemManager");
 
     function set(module) {
         $("#"+module).click(function (){
-            $("#"+module).attr('class','btn btn-success col-md-12');
+            $("#"+module).attr('class','menu btn btn-success col-md-12');
             $("#workspace").attr("src","/"+module)
         });
     }
