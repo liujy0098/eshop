@@ -74,15 +74,18 @@
                 $('#table').bootstrapTable("refresh");
                 $('#table').bootstrapTable("showAllColumns");
                 $('#table').bootstrapTable("hideColumn","adminLoginTime");
+                $("h4").text("查看管理员列表");
                 $("#adminBox").modal('show');
             });
             $("#m2").click(function () {
                 $("#passwordForm")[0].reset();
+                $("h4").text("修改密码");
                 $("#passwordBox").modal('show');
 
             });
             $("#m3").click(function () {
                 $("#form")[0].reset();
+                $("h4").text("新增管理员");
                 $("#formBox").modal('show');
                 
             });
@@ -91,6 +94,7 @@
                 $('#table').bootstrapTable("hideAllColumns");
                 $('#table').bootstrapTable("showColumn","adminName");
                 $('#table').bootstrapTable("showColumn","adminLoginTime");
+                $("h4").text("管理员登录日志");
                 $("#adminBox").modal('show');
             });
             $("#submit").click(function () {
@@ -137,7 +141,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">新增管理员</h4>
+                    <h4 class="modal-title">管理员日志</h4>
                 </div>
                 <div class="modal-body">
                     <table id="table"></table>
