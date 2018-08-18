@@ -63,6 +63,8 @@ public class AdminController {
         if(admin==null)
             return "NO";
         else {
+            admin.setAdminLoginTime(new Date());
+            adminDAO.updateByPrimaryKeySelective(admin);
             session.setAttribute("adminName",admin.getAdminName());
             return "YES";
         }

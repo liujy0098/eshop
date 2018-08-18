@@ -33,7 +33,7 @@ public class ArticleController {
     @RequestMapping("add")
     public String add(Articleinfo articleinfo){
         articleDAO.insertSelective(articleinfo);
-        String str="http://192.168.1.123:9527/postnews?"+
+        String str="http://139.199.206.241:9527/postnews?"+
                 "articleTitle="+articleinfo.getArticleTitle()+
                 "&articlePicUrl="+articleinfo.getArticlePicUrl();
         System.out.println(str);

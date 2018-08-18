@@ -25,7 +25,7 @@
                 search: true,
                 toolbar: '#toolbar',
                 onDblClickRow: function (row) {
-                    $("#title").text("编辑该纪录");
+                    $("#title").text("编辑分类");
                     $("#submit").attr('class', 'btn btn-warning');
                     $("#submit").text("修改");
                     $("#form").attr('action', host() + '/category/update');
@@ -92,7 +92,7 @@
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
-                $("#title").text("添加新纪录");
+                $("#title").text("新增分类");
                 $("#catId").attr('readonly',true);
                 $("#submit").attr('class', 'btn btn-info');
                 $("#submit").text("添加");

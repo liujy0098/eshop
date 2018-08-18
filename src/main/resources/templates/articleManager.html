@@ -38,7 +38,7 @@
 
             },
             onDblClickRow:function(row){
-                $("#title").text("编辑该纪录");
+                $("#title").text("编辑文章");
                 $("#submit").attr('class','btn btn-warning');
                 $("#submit").text("修改");
                 $("#form").attr('action',host()+'/article/update');
@@ -107,7 +107,7 @@
         });
         $("#add").click(function () {
             $("#form")[0].reset();
-            $("#title").text("添加新纪录");
+            $("#title").text("新增文章");
             $("#submit").attr('class','btn btn-info');
             $("#submit").text("添加");
             $("#form").attr('action',host()+'/article/add');
@@ -132,7 +132,7 @@
         });
         $("#picSubmit").click(function () {
             $("#dataForm").submit();
-        })
+        });
     });
     function upload(){
         $("#fileForm").ajaxSubmit({
@@ -141,7 +141,7 @@
                 $("#articlePicUrl").val(data);
                 $("#img").attr('src',data);
                 $("#picChoosen").attr('src',data);
-            },
+            }
         });
 
     }
