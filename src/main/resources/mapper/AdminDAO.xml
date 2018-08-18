@@ -17,11 +17,17 @@
     admin_login_time, created_time, updated_time
   </sql>
 
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    *
+    from admin
+  </select>
+
   <select id="login" resultMap="BaseResultMap">
     select
     *
     from admin
-    where admin_login_num = #{adminLoginNum} AND admin_password = #{adminPassword}
+    where admin_name = #{adminName} AND admin_password = #{adminPassword}
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

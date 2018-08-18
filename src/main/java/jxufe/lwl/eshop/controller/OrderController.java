@@ -1,7 +1,9 @@
 package jxufe.lwl.eshop.controller;
 
 import jxufe.lwl.eshop.dao.OrderinfoDAO;
+import jxufe.lwl.eshop.dao.OrderinfoGoodsDAO;
 import jxufe.lwl.eshop.entity.Orderinfo;
+import jxufe.lwl.eshop.entity.OrderinfoGoods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,9 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderinfoDAO orderinfoDAO;
+
+    @Autowired
+    private OrderinfoGoodsDAO goodslistDao;
 
     @RequestMapping("list")
     @ResponseBody
@@ -39,6 +44,12 @@ public class OrderController {
     public String update(Orderinfo orderinfo){
         orderinfoDAO.updateByPrimaryKeySelective(orderinfo);
         return "orderManager";
+    }
+
+    @RequestMapping("goodslist")
+    @ResponseBody
+    public List<OrderinfoGoods> goodslist(long orderSn){
+        return goodslistDao.findByOrderId(orderSn);
     }
 
     @InitBinder

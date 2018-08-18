@@ -4,6 +4,7 @@ import jxufe.lwl.eshop.dao.GoodsCommentDAO;
 import jxufe.lwl.eshop.entity.GoodsComment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,13 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("comment")
 public class CommentController {
     @Autowired
     private GoodsCommentDAO commentDAO;
 
     @RequestMapping("list")
+    @ResponseBody
     public List<GoodsComment> list(){
         return commentDAO.findAll();
     }

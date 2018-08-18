@@ -13,6 +13,39 @@
 
 	<script>
         $(document).ready(function () {
+            $('#list').bootstrapTable({
+                striped:true,
+                columns: [{
+                    field: 'recId',
+                    title: 'ID',
+                    width: 100
+                }, {
+                    field: 'goodsId',
+                    title: '商品id',
+                    width: 200
+
+                }, {
+                    field: 'goodsName',
+                    title: '名称',
+                    width: 100
+                }, {
+                    field: 'goodsPrice',
+                    title: '价格',
+                    width: 100,
+                    formatter:function (value) {
+                        return value+"元";
+                    }
+                }, {
+                    field: 'goodsNum',
+                    title: '数量',
+                    width: 100,
+                }, {
+                    field: 'goodsPayPrice',
+                    title: '实际成交价',
+                    width: 100
+                }]
+            });
+
             $('#table').bootstrapTable({
                 url: '/order/list',
                 striped:true,
@@ -24,14 +57,22 @@
                 clickToSelect:true,
                 search:true,
                 toolbar:'#toolbar',
+				onClickCell:function (field, value, row) {
+                    if(field=="list"){
+                        $.get('/order/goodslist?orderSn='+row.orderSn,function (data) {
+                            $('#list').bootstrapTable('load', data)
+                        });
+                        $("#listBox").modal('show');
+                    }
+
+                },
                 onDblClickRow:function(row){
-                    $("#title").text("编辑该纪录");
+                    $("#title").text("编辑订单");
                     $("#submit").attr('class','btn btn-warning');
                     $("#submit").text("修改");
                     $("#form").attr('action',host()+'/order/update');
                     $("#form")[0].reset();
                     $("#orderId").val(row.orderId);
-                    $("#orderId").attr("readonly",true);
                     $("#orderSn").val(row.orderSn);
                     $("#buyerId").val(row.buyerId);
                     $("#addTime").val(row.addTime);
@@ -45,29 +86,57 @@
                     checkbox: true
                 }, {
                     field: 'orderId',
-                    title: 'ID'
+                    title: 'ID',
+                    width: 100
                 }, {
                     field: 'orderSn',
-                    title: '订单编号'
+                    title: '订单编号',
+                    width: 200
 
                 }, {
                     field: 'buyerId',
-                    title: '买家ID'
-                }, {
-                    field: 'addTime',
-                    title: '下单时间'
-                }, {
-                    field: 'paymentCode',
-                    title: '支付代码'
-                }, {
-                    field: 'finnshedTime',
-                    title: '完成时间'
+                    title: '买家ID',
+                    width: 100
                 }, {
                     field: 'orderAmount',
-                    title: '总价格'
+                    title: '总价格',
+                    width: 100,
+                    formatter:function (value) {
+                        return value+"元";
+                    }
                 }, {
                     field: 'orderState',
-                    title: '状态'
+                    title: '订单状态',
+                    width: 100,
+                    formatter:function (value) {
+                        if(value==0) return "已取消";
+                        else if(value==10) return "未付款";
+                        else if(value==20) return "已付款";
+                        else if(value==30) return "已发货";
+                        else if(value==40) return "已收货";
+                        else return "（未知代码）";
+
+                    }
+                }, {
+                    field: 'paymentCode',
+                    title: '支付代码',
+                    width: 100
+                }, {
+                    field: 'addTime',
+                    title: '下单时间',
+                    width: 150
+                }, {
+                    field: 'finnshedTime',
+                    title: '完成时间',
+                    width: 150
+                }, {
+                    field: 'list',
+                    title: '',
+                    align: "center",
+					formatter:function () {
+                        return "<span class='glyphicon glyphicon-list'> 查看清单</span>"
+						
+                    }
                 }]
             });
             $('#remove').click(function () {
@@ -88,8 +157,7 @@
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
-                $("#orderId").attr("readonly",false);
-                $("#title").text("添加新纪录");
+                $("#title").text("新增订单");
                 $("#submit").attr('class','btn btn-info');
                 $("#submit").text("添加");
                 $("#form").attr('action',host()+'/order/add');
@@ -138,7 +206,7 @@
 						<div class="form-group">
 							<label class="col-sm-1 control-label" >ID:</label>
 							<div class="col-sm-2">
-								<input name="orderId" id="orderId" type="number" class="form-control">
+								<input name="orderId" id="orderId" readonly="readonly" type="text" class="form-control">
 							</div>
 
 							<label class="col-sm-2 control-label">订单编号:</label>
@@ -166,13 +234,19 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">总价格:</label>
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<input name="orderAmount" id="orderAmount" type="number" class="form-control"></input>
 							</div>
 
-							<label class="col-sm-2 control-label">状态:</label>
+							<label class="col-sm-2 control-label">订单状态:</label>
 							<div class="col-sm-4">
-								<input name="orderState" id="orderState" type="text" class="form-control"></input>
+								<select name="orderState" id="orderState" type="text" class="form-control">
+									<option value="0">已取消</option>
+									<option value="10">未付款</option>
+									<option value="20">已付款</option>
+									<option value="30">已发货</option>
+									<option value="40">已收货</option>
+								</select>
 							</div>
 						</div>
 					</form>
@@ -184,6 +258,26 @@
 			</div>
 		</div>
 	</div>
+
+
+	<div id="listBox" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">订单详细清单</h4>
+				</div>
+				<div class="modal-body">
+				<table id="list"></table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 
 </div>
 </body>

@@ -44,7 +44,6 @@
                 $("#form").attr('action',host()+'/article/update');
                 $("#form")[0].reset();
                 $("#articleId").val(row.articleId);
-                $("#articleId").attr("readonly",true);
                 $("#articleTitle").val(row.articleTitle);
                 $("#articlePicUrl").val(row.articlePicUrl);
                 $("#articleContent").val(row.articleContent);
@@ -55,26 +54,38 @@
                 checkbox: true
             }, {
                 field: 'articleId',
-                title: 'ID'
-            }, {
-                field: 'articleTitle',
-                title: '标题'
-
+                title: 'ID',
+                width: 100
             }, {
                 field: 'articlePicUrl',
                 title: '图片',
                 formatter:function (value,row) {
                     return "<img src='"+value+"' height='20px'></img>"
-                }
+                },
+                width: 100
+            }, {
+                field: 'articleTitle',
+                title: '标题',
+                width: 200
             }, {
                 field: 'articleContent',
-                title: '内容'
+                title: '内容',
+                width: 500
             }, {
                 field: 'amountOfReading',
-                title: '点击量'
+                title: '点击量',
+                width: 100
             }, {
                 field: 'articleShow',
-                title: '允许显示'
+                title: '允许显示',
+                formatter: function (value, row, index) {
+                    if (value == 1) {
+                        return "允许";
+                    } else if (value == 0) {
+                        return "禁止";
+                    }
+                },
+                width: 100
             }]
         });
         $('#remove').click(function () {
@@ -95,12 +106,10 @@
         });
         $("#add").click(function () {
             $("#form")[0].reset();
-            $("#articleId").attr("readonly",false);
             $("#title").text("添加新纪录");
             $("#submit").attr('class','btn btn-info');
             $("#submit").text("添加");
             $("#form").attr('action',host()+'/article/add');
-
             $("#formBox").modal('show');
         });
         $("#submit").click(function () {
@@ -115,7 +124,11 @@
 
         $("#choosePic").click(function () {
             $("#fileInput").click();
-        })
+        });
+        $("#setPic").click(function () {
+            $("#fileForm").attr('action',host()+"/uploadfile");
+            $("#fileInput").click();
+        });
         $("#picSubmit").click(function () {
             $("#dataForm").submit();
         })
@@ -124,7 +137,9 @@
         $("#fileForm").ajaxSubmit({
             success:function (data) {
                 $("#picArticlePicUrl").val(data);
+                $("#articlePicUrl").val(data);
                 $("#img").attr('src',data);
+                $("#picChoosen").attr('src',data);
             },
         });
 
@@ -159,9 +174,9 @@
             <div class="modal-body">
                 <form id="form" class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-1 control-label" >ID:</label>
+                        <label class="col-sm-2 control-label" >ID:</label>
                         <div class="col-sm-2">
-                            <input name="articleId" id="articleId" type="number" class="form-control">
+                            <input name="articleId" id="articleId" type="text" class="form-control" readonly="readonly">
                         </div>
 
                         <label class="col-sm-2 control-label">点击量:</label>
@@ -171,7 +186,8 @@
 
                         <label class="col-sm-2 control-label">允许显示:</label>
                         <div class="col-sm-2">
-                            <input name="articleShow" id="articleShow" type="text" class="form-control">
+                            <input name="articleShow" value="1" id="articleShow1" type="radio">是 | 否
+                            <input name="articleShow" value="0"id="articleShow0" type="radio">
                         </div>
                     </div>
 
@@ -187,9 +203,12 @@
                             <textarea name="articleContent" id="articleContent" type="text" class="form-control"></textarea>
                         </div>
                     </div>
+                    <input name="articlePicUrl" id="articlePicUrl" type="text" style="display: none">
                 </form>
             </div>
             <div class="modal-footer">
+                <button id="setPic" class="btn btn-info pull-left">设置图片 <img id="picChoosen" height="20px" /></button>
+
                 <button id="submit" type="button">提交</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>

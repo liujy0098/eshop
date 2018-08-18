@@ -14,7 +14,7 @@
 	<script>
         $(document).ready(function () {
             $('#table').bootstrapTable({
-                url: '/comment/list',
+                url: '/admin/list',
                 striped:true,
 				height:580,
                 pagination:true,
@@ -28,61 +28,71 @@
                     $("#title").text("编辑该纪录");
                     $("#submit").attr('class','btn btn-warning');
                     $("#submit").text("修改");
-                    $("#form").attr('action',host()+'/comment/update');
+                    $("#form").attr('action',host()+'/admin/update');
                     $("#form")[0].reset();
-                    $("#scommId").val(row.scommId);
-                    $("#goodisId").val(row.goodisId);
-                    $("#scommMemberid").val(row.scommMemberid);
-                    $("#scommContent").val(row.scommContent);
-                    $("#scommTime").val(row.scommTime);
+                    $("#adminId").val(row.adminId);
+                    $("#adminId").attr("readonly",adminId);
+                    $("#adminName").val(row.adminName);
+                    $("#adminPassword").val(row.adminPassword);
+                    $("#adminLoginNum").val(row.adminLoginNum);
+                    $("#adminIsSuper").val(row.adminIsSuper);
+                    $("#isDisable").val(row.isDisable);
+                    $("#adminLoginTime").val(row.adminLoginTime);
+                    $("#createdTime").val(row.createdTime);
                     $("#formBox").modal('show');
                 },
                 columns: [{
                     checkbox: true
                 }, {
-                    field: 'scommId',
-                    title: 'ID',
-                    width: 100
+                    field: 'adminId',
+                    title: 'ID'
                 }, {
-                    field: 'goodisId',
-                    title: '商品ID',
-					width: 100
+                    field: 'adminName',
+                    title: '管理员名称'
 
                 }, {
-                    field: 'scommMemberid',
-                    title: '会员ID',
-                    width: 100
+                    field: 'adminPassword',
+                    title: '管理员密码'
                 }, {
-                    field: 'scommContent',
-                    title: '评论内容'
+                    field: 'adminLoginNum',
+                    title: '登录次数'
                 }, {
-                    field: 'scommTime',
-                    title: '评论时间',
-                    width: 150
+                    field: 'adminIsSuper',
+                    title: '是否超级管理员'
+                }, {
+                    field: 'isDisable',
+                    title: '是否禁用'
+                }, {
+                    field: 'adminLoginTime',
+                    title: '登录时间'
+                }, {
+                    field: 'createdTime',
+                    title: '创建时间'
                 }]
             });
             $('#remove').click(function () {
                 var ids = $.map($('#table').bootstrapTable('getSelections'), function (row) {
-                    return row.scommId;
+                    return row.adminId;
                 });
                 var json=JSON.stringify(ids);
                 $.ajax({
                     type:'post',
-                    url:host()+'/comment/remove',
+                    url:host()+'/admin/remove',
                     contentType : 'application/json;charset=utf-8',
                     data : json
                 });
                 $('#table').bootstrapTable('remove', {
-                    field: 'scommId',
+                    field: 'adminId',
                     values: ids
                 });
             });
             $("#add").click(function () {
                 $("#form")[0].reset();
+                $("#adminId").attr("readonly",false);
                 $("#title").text("添加新纪录");
                 $("#submit").attr('class','btn btn-info');
                 $("#submit").text("添加");
-                $("#form").attr('action',host()+'/comment/add');
+                $("#form").attr('action',host()+'/admin/add');
 
                 $("#formBox").modal('show');
             });
@@ -126,34 +136,41 @@
 				<div class="modal-body">
 					<form id="form" class="form-horizontal">
 						<div class="form-group">
-							<label class="col-sm-1 control-label" >ID:</label>
+							<label class="col-sm-2 control-label" >ID:</label>
 							<div class="col-sm-2">
-								<input name="scommId" id="scommId" readonly="readonly" type="text" class="form-control">
+								<input name="adminId" id="adminId" type="number" class="form-control">
 							</div>
 
-							<label class="col-sm-2 control-label">商品ID:</label>
+							<label class="col-sm-2 control-label">名称:</label>
 							<div class="col-sm-2">
-								<input name="goodisId" id="goodisId" type="number" class="form-control">
+								<input name="adminName" id="adminName" type="text" class="form-control">
 							</div>
 
-							<label class="col-sm-2 control-label">会员ID:</label>
+							<label class="col-sm-2 control-label">是否超级管理员:</label>
 							<div class="col-sm-2">
-								<input name="scommMemberid" id="scommMemberid" type="number" class="form-control">
+								<input name="adminIsSuper" id="adminIsSuper" type="text" class="form-control"></input>
 							</div>
+
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label ">评论时间:</label>
+							<label class="col-sm-2 control-label">管理员密码:</label>
 							<div class="col-sm-10">
-								<input name="scommTime" id="scommTime" type="date" class="form-control">
+								<input name="adminPassword" id="adminPassword" type="text" class="form-control">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label">评论内容:</label>
-							<div class="col-sm-10">
-								<textarea name="scommContent" id="scommContent" type="text" class="form-control"></textarea>
+							<label class="col-sm-2 control-label ">登录次数:</label>
+							<div class="col-sm-2">
+								<input name="adminLoginNum" id="adminLoginNum" type="number" class="form-control">
+							</div>
+
+							<label class="col-sm-2 control-label">是否禁用:</label>
+							<div class="col-sm-2">
+								<input name="isDisable" id="isDisable" type="text" class="form-control"></input>
 							</div>
 						</div>
+
 					</form>
 				</div>
 				<div class="modal-footer">

@@ -22,7 +22,7 @@ public class InterceptorConfig  implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
         HttpSession session = httpServletRequest.getSession();
-        if(!StringUtils.isEmpty(session.getAttribute("admin"))){
+        if(!StringUtils.isEmpty(session.getAttribute("adminLoginNum"))){
             return true;
         }
         else{

@@ -12,6 +12,9 @@
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
+  <select id="findByOrderId" resultMap="BaseResultMap">
+    select * FROM orderinfo_goods where order_id = #{orderSn}
+  </select>
   <insert id="insert" parameterType="jxufe.lwl.eshop.entity.OrderinfoGoods">
     insert into orderinfo_goods (rec_id, order_id, goods_id, 
       goods_name, goods_price, goods_num, 

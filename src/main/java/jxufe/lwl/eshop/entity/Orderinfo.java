@@ -1,5 +1,7 @@
 package jxufe.lwl.eshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,6 +38,7 @@ public class Orderinfo implements Serializable {
     /**
      * 订单生成时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date addTime;
 
     /**
@@ -51,6 +54,7 @@ public class Orderinfo implements Serializable {
     /**
      * 订单完成时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date finnshedTime;
 
     /**
